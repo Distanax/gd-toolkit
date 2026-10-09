@@ -54,9 +54,10 @@ up the level string first; never upload levels online.
   build. Task 8 is blocked on Distanax.
 
 - 2026-10-09: Task 9 done: threading, matjson, file, settings, bindings and MCP v2 notes recorded below.
+- 2026-10-08: Task 10 done: docs/PROTOCOL.md: bridge.json discovery, HTTP POST /rpc + X-GD-Bridge-Token, /health, Origin rejected, error codes, main-thread execution, jobs for long work, PNGs returned as file paths, safety rules.
 
 ## Next
-- Task 10: commit docs/PROTOCOL.md (drafted). Then task 11 (listener).
+- Task 11: Winsock listener (drafted in mod/src/HttpServer.*), push and get CI green.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
