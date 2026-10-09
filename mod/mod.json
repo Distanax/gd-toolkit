@@ -10,5 +10,21 @@
 	"description": "Local-only bridge that lets an MCP server control the level editor.",
 	"links": {
 		"source": "https://github.com/Distanax/gd-toolkit"
+	},
+	"settings": {
+		"port": {
+			"type": "int",
+			"name": "Port",
+			"description": "Local port the bridge listens on (127.0.0.1 only). If it is taken, a random free port is used; the MCP server always reads the real one from bridge.json.",
+			"default": 47821,
+			"min": 1024,
+			"max": 65535,
+			"requires-restart": true,
+			"control": {
+				"arrows": false,
+				"slider": false,
+				"input": true
+			}
+		}
 	}
 }
