@@ -55,9 +55,10 @@ up the level string first; never upload levels online.
 
 - 2026-10-09: Task 9 done: threading, matjson, file, settings, bindings and MCP v2 notes recorded below.
 - 2026-10-09: Task 10 done: docs/PROTOCOL.md: bridge.json discovery, HTTP POST /rpc + X-GD-Bridge-Token, /health, Origin rejected, error codes, main-thread execution, jobs for long work, PNGs returned as file paths, safety rules.
+- 2026-10-09: Task 11 done: Winsock listener on 127.0.0.1 (port setting 47821, ephemeral fallback), /health, Origin -> 403. CI green at 1f2b6eb after one fix: Geode PCH already includes Windows.h -> winsock.h, so winsock2.h redefined sockaddr; now uses winsock.h. Added a problem matcher so compiler errors show up as public check-run annotations (raw logs need auth).
 
 ## Next
-- Task 11: Winsock listener (drafted in mod/src/HttpServer.*), push and get CI green.
+- Task 12: token + bridge.json.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
