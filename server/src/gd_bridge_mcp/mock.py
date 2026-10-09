@@ -64,7 +64,19 @@ class MockBridge:
             "playtest": self._playtest,
             "capture_frames": self._capture_frames,
             "job_status": self._job_status,
+            "save_level": self._save_level,
+            "create_level": self._create_level,
+            "open_level": self._open_level,
+            "list_levels": self._list_levels,
+            "get_music": self._get_music,
+            "undo": self._undo,
+            "redo": self._redo,
+            "list_backups": self._list_backups,
+            "restore_backup": self._restore_backup,
         }
+        self.saved_levels: dict[str, str] = {}  # name -> saved level string (the "local levels")
+        self.undo_stack: list[str] = []
+        self.redo_stack: list[str] = []
         self.jobs: dict[str, dict[str, Any]] = {}
         self.temp_start_pos: float | None = None
         self.camera = {"x": 285.0, "y": 160.0, "zoom": 1.0}
@@ -273,6 +285,102 @@ class MockBridge:
         if p.get("job") not in self.jobs:
             raise MockError("not_found", "no such job")
         return self.jobs[p["job"]]
+
+    # level management ------------------------------------------------------------
+    def _load(self, name: str, s: str, clear_history: bool = True) -> None:
+        header, *objs = s.split(";")
+        self.header = header
+        self.state["level"]["name"] = name
+        self.objects[:] = [self._new_object(o) for o in objs if o.strip()]
+        if clear_history:
+            self.undo_stack.clear()
+            self.redo_stack.clear()
+
+    def _save_level(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_write(p, "save_level")
+        name = self.state["level"]["name"]
+        self.saved_levels[name] = self.level_string()
+        return {"name": name, "saved": True, "object_count": len(self.objects), "backup": self._backup_path()}
+
+    def _prepare_to_leave(self) -> None:
+        if self.state["scene"] == "LevelEditorLayer":
+            if self.state["playtest"] != "not":
+                raise MockError("busy", "playtest running")
+            name = self.state["level"]["name"]
+            if not name.startswith(SAFE_PREFIX):
+                raise MockError("level_protected", f"the editor has '{name}' open; save and exit it yourself first")
+            self.backups.append((name, "auto_save_before_switch", self.level_string()))
+            self.saved_levels[name] = self.level_string()
+
+    def _create_level(self, p: dict[str, Any]) -> dict[str, Any]:
+        name = p["name"] if p["name"].startswith(SAFE_PREFIX) else SAFE_PREFIX + p["name"]
+        if name in self.saved_levels:
+            raise MockError("invalid_params", f"a level named '{name}' already exists")
+        self._prepare_to_leave()
+        self.saved_levels[name] = DEFAULT_HEADER + ";"
+        self.state["scene"] = "LevelEditorLayer"
+        self._load(name, self.saved_levels[name])
+        self.state["level"]["song_id"] = int(p.get("song_id") or 0)
+        return {"created": {"name": name, "song_id": self.state["level"]["song_id"], "audio_track": 0,
+                            "claude": True}, "opening_editor": True}
+
+    def _open_level(self, p: dict[str, Any]) -> dict[str, Any]:
+        name = p["name"]
+        if name not in self.saved_levels:
+            raise MockError("not_found", f"no local level named '{name}'")
+        if not name.startswith(SAFE_PREFIX) and p.get("confirm_name") != name:
+            raise MockError("level_protected", f"'{name}' is not a CLAUDE level")
+        self._prepare_to_leave()
+        self.state["scene"] = "LevelEditorLayer"
+        self._load(name, self.saved_levels[name])
+        return {"opened": {"name": name, "claude": name.startswith(SAFE_PREFIX)}, "opening_editor": True}
+
+    def _list_levels(self, p: dict[str, Any]) -> dict[str, Any]:
+        names = [n for n in self.saved_levels if not p.get("claude_only") or n.startswith(SAFE_PREFIX)]
+        return {"total": len(names), "levels": [{"name": n, "song_id": 0, "audio_track": 0,
+                                                 "claude": n.startswith(SAFE_PREFIX)} for n in names]}
+
+    def _get_music(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_editor()
+        sid = self.state["level"]["song_id"]
+        return {"song_id": sid, "audio_track": 0, "custom_song": sid > 0, "song_ids": "", "offset": 0.0,
+                "fade_in": False, "fade_out": False, "guideline_count": 0, "guidelines": []}
+
+    def _undo(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_write(p, "undo")
+        did = bool(self.undo_stack)
+        if did:
+            self.redo_stack.append(self.level_string())
+            self._load(self.state["level"]["name"], self.undo_stack.pop(), False)
+        return {"undone": did, "object_count": len(self.objects)}
+
+    def _redo(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_write(p, "redo")
+        did = bool(self.redo_stack)
+        if did:
+            self.undo_stack.append(self.level_string())
+            self._load(self.state["level"]["name"], self.redo_stack.pop(), False)
+        return {"redone": did, "object_count": len(self.objects)}
+
+    def _backup_names(self, level: str) -> list[str]:
+        return [f"{i:06d}_{reason}.txt" for i, (name, reason, _) in enumerate(self.backups) if name == level][::-1]
+
+    def _list_backups(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_editor()
+        names = self._backup_names(p.get("level") or self.state["level"]["name"])
+        return {"dir": "mock", "total": len(names), "backups": [{"file": n, "bytes": 0} for n in names[:p.get("limit", 50)]]}
+
+    def _restore_backup(self, p: dict[str, Any]) -> dict[str, Any]:
+        f = p["file"]
+        if "/" in f or "\\" in f or ".." in f:
+            raise MockError("invalid_params", "bare file name only")
+        level = p.get("level") or self.state["level"]["name"]
+        if f not in self._backup_names(level):
+            raise MockError("not_found", f"no backup '{f}'")
+        content = self.backups[int(f.split("_")[0])][2]
+        self._require_write(p, "before_restore")
+        self._load(self.state["level"]["name"], content)
+        return {"restored": f, "backup": self._backup_path(), "reloaded": True}
 
     # -- default commands --------------------------------------------------------
     def _status(self, p: dict[str, Any]) -> dict[str, Any]:

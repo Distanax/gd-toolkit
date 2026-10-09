@@ -91,9 +91,11 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 44 done: get_music: song_id, audio_track, custom_song, song_ids, offset, fade_in/out, guidelines [{time, color}] parsed from the guideline string.
 - 2026-10-09: Task 46 done: undo / redo via EditorUI::undoLastAction/redoLastAction (only if m_undoObjects/m_redoObjects non-empty; guard + backup first). Committed with 47.
 - 2026-10-09: Task 47 done: list_backups(level?, limit?) newest first {file, bytes}; restore_backup(file, level?, confirm_name?): bare file names only (no path traversal), backs up the current state, then replaceLevelString.
+- 2026-10-09: Task 45 done: MCP save_level, create_level, open_level, list_levels, get_music (committed with 48).
+- 2026-10-09: Task 48 done: MCP undo, redo, list_backups, restore_backup; mock implements level list, prepare-to-leave rules, undo/redo stacks and backups; 35 tests pass (fixture arg renamed tool_name, positional-only, so tools can take a `name` argument).
 
 ## Next
-- Wait for mod CI; tasks 45 + 48 (MCP tools for M8/M9).
+- M10: e2e test (task 49), TESTING section 2 (50), CLAUDE.md tool docs (52).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).

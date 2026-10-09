@@ -25,10 +25,10 @@ def call_tool(client):
 
     server = build_server(client)
 
-    def _call(name, **args):
+    def _call(tool_name, /, **args):
         async def run():
             async with Client(server) as c:
-                return await c.call_tool(name, args)
+                return await c.call_tool(tool_name, args)
 
         return asyncio.run(run())
 

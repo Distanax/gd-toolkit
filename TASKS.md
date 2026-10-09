@@ -65,12 +65,12 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 42. Mod: `save_level`
 - [x] 43. Mod: `create_level(name, song_id)` (forces "CLAUDE " prefix) and `open_level(name)`
 - [x] 44. Mod: `get_music` (song ID, offset, guidelines/BPM if set)
-- [ ] 45. MCP tools for M8
+- [x] 45. MCP tools for M8
 
 ## M9 — Undo/redo + backups
 - [x] 46. Mod: `undo`, `redo`
 - [x] 47. Mod: `list_backups`, `restore_backup` (restore itself backs up first)
-- [ ] 48. MCP tools for M9
+- [x] 48. MCP tools for M9
 
 ## M10 — End-to-end + docs
 - [ ] 49. tests/e2e_bridge.py: create "CLAUDE test", add blocks/spikes/orb/move trigger, read back, screenshot, playtest 3 s with frames, save (acceptance 4)

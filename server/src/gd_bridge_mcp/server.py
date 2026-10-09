@@ -172,6 +172,61 @@ def build_server(client: BridgeClient | None = None) -> MCPServer:
                     "interval_ms": interval_ms})
         return out
 
+    # ---- level management + music ----------------------------------------------------------
+    @mcp.tool()
+    def save_level(confirm_name: str | None = None) -> dict[str, Any]:
+        """Save the open editor level to GD's level list and to disk (backup first)."""
+        return call("save_level", confirm_name=confirm_name)
+
+    @mcp.tool()
+    def create_level(name: str, song_id: int | None = None, audio_track: int | None = None) -> dict[str, Any]:
+        """Create a new local level and open it in the editor. The name always gets the "CLAUDE " prefix.
+        song_id = Newgrounds/custom song ID, audio_track = official song index. Refused while you're
+        editing one of your own (non-CLAUDE) levels, so unsaved work is never discarded; a CLAUDE level
+        that is open gets backed up and saved first. Call status after a second to confirm the editor."""
+        return call("create_level", name=name, song_id=song_id, audio_track=audio_track)
+
+    @mcp.tool()
+    def open_level(name: str, confirm_name: str | None = None) -> dict[str, Any]:
+        """Open a local level in the editor by exact name (see list_levels). Levels not named
+        "CLAUDE ..." need confirm_name=<exact name>. Same rules as create_level about leaving the editor."""
+        return call("open_level", name=name, confirm_name=confirm_name)
+
+    @mcp.tool()
+    def list_levels(claude_only: bool = False, limit: int = 200) -> dict[str, Any]:
+        """The local (created) levels: name, song, and whether it's a CLAUDE level."""
+        return call("list_levels", claude_only=claude_only, limit=limit)
+
+    @mcp.tool()
+    def get_music() -> dict[str, Any]:
+        """Music of the open level: song_id (custom) or audio_track (official), song offset, fade in/out,
+        and the guidelines (time + colour markers, usually placed on beats)."""
+        return call("get_music")
+
+    # ---- undo / redo / backups ---------------------------------------------------------------
+    @mcp.tool()
+    def undo(confirm_name: str | None = None) -> dict[str, Any]:
+        """Undo the last editor action (GD's own undo). Note set_level_string/restore_backup reload the
+        editor and clear the undo history; use restore_backup for those."""
+        return call("undo", confirm_name=confirm_name)
+
+    @mcp.tool()
+    def redo(confirm_name: str | None = None) -> dict[str, Any]:
+        """Redo the last undone editor action."""
+        return call("redo", confirm_name=confirm_name)
+
+    @mcp.tool()
+    def list_backups(level: str | None = None, limit: int = 50) -> dict[str, Any]:
+        """Backups of a level (default: the open one), newest first. Every write tool creates one."""
+        return call("list_backups", level=level, limit=limit)
+
+    @mcp.tool()
+    def restore_backup(file: str, level: str | None = None, confirm_name: str | None = None) -> dict[str, Any]:
+        """Replace the open level with a backup (file name from list_backups; `level` picks another
+        level's backup folder). The current state is backed up first, so a restore can be undone the
+        same way."""
+        return call("restore_backup", file=file, level=level, confirm_name=confirm_name)
+
     mcp.bridge = bridge  # type: ignore[attr-defined]  (handy in tests)
     return mcp
 
