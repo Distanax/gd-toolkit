@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+# generated levels and previews
+out/
+# reference levels from other creators (exported via GDShare), not redistributed
+refs/
