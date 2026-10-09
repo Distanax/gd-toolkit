@@ -58,7 +58,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 37. Research: editor playtest API (onPlaytest/onStopPlaytest, start from x / start pos)
 - [x] 38. Mod: `playtest(start|stop, from_x?)`
 - [x] 39. Mod: `capture_frames(n, interval)` during playtest (async job, poll for results)
-- [ ] 40. MCP tools `playtest`, `capture_frames` (returns images)
+- [x] 40. MCP tools `playtest`, `capture_frames` (returns images)
 
 ## M8 — Level management + music
 - [ ] 41. Research: saving from the editor, LocalLevelManager, creating/opening levels by name in 2.2081

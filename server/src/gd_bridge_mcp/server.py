@@ -1,6 +1,7 @@
 """The MCP server: tools that forward to the GD Bridge mod."""
 from __future__ import annotations
 
+import time
 from typing import Any, Callable
 
 from mcp.server.mcpserver import MCPServer
@@ -134,6 +135,42 @@ def build_server(client: BridgeClient | None = None) -> MCPServer:
         return [img, {"path": shot["path"], "width": w, "height": h,
                       "captured_width": shot["width"], "captured_height": shot["height"],
                       "camera": shot.get("camera")}]
+
+    # ---- playtest -------------------------------------------------------------------------
+    @mcp.tool()
+    def playtest(action: str = "status", from_x: float | None = None, from_y: float | None = None,
+                 confirm_name: str | None = None) -> dict[str, Any]:
+        """Editor playtest. action: "start" | "stop" | "pause" | "resume" | "status". start with from_x
+        (GD units; from_y defaults to 15) starts from that x by placing a temporary start position that
+        is removed again when the playtest stops (counts as an edit: CLAUDE-named levels or
+        confirm_name). The start position uses default settings (cube, 1x), so starting inside a ship or
+        2x section plays it as cube 1x."""
+        return call("playtest", action=action, from_x=from_x, from_y=from_y, confirm_name=confirm_name)
+
+    @mcp.tool(structured_output=False)
+    def capture_frames(count: int = 10, interval_ms: int = 250, hide_ui: bool = True,
+                       max_width: int = 640) -> list[Any]:
+        """Capture `count` frames every `interval_ms` while a playtest runs (start one with playtest first)
+        and return them as images in order, so you can see gameplay in motion. Frames are downscaled to
+        max_width. Waits until all frames are written (about count * interval_ms)."""
+        job = call("capture_frames", count=count, interval_ms=interval_ms, hide_ui=hide_ui)["job"]
+        deadline = time.monotonic() + count * interval_ms / 1000 + 20
+        status = call("job_status", job=job)
+        while status["state"] == "running" and time.monotonic() < deadline:
+            time.sleep(0.25)
+            status = call("job_status", job=job)
+        if status["state"] == "running":
+            raise ToolError(f"[timeout] frame capture {job} still running after {deadline:.0f}s")
+        out: list[Any] = []
+        sizes = []
+        for path in status["frames"]:
+            img, w, h = load_png(path, max_width)
+            out.append(img)
+            sizes.append((w, h))
+        out.append({"job": job, "state": status["state"], "error": status.get("error"),
+                    "frames": status["frames"], "size": sizes[0] if sizes else None,
+                    "interval_ms": interval_ms})
+        return out
 
     mcp.bridge = bridge  # type: ignore[attr-defined]  (handy in tests)
     return mcp

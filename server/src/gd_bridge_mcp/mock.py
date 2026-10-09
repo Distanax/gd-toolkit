@@ -61,7 +61,12 @@ class MockBridge:
             "get_camera": lambda p: dict(self.camera),
             "move_camera": self._move_camera,
             "screenshot": self._screenshot,
+            "playtest": self._playtest,
+            "capture_frames": self._capture_frames,
+            "job_status": self._job_status,
         }
+        self.jobs: dict[str, dict[str, Any]] = {}
+        self.temp_start_pos: float | None = None
         self.camera = {"x": 285.0, "y": 160.0, "zoom": 1.0}
         self.capture_size = (1920, 1080)
         self._server: ThreadingHTTPServer | None = None
@@ -224,6 +229,50 @@ class MockBridge:
         path = self.capture(f"shot_{len(self.calls)}")
         w, h = self.capture_size
         return {"path": path, "width": w, "height": h, "camera": cam}
+
+    def _playtest(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_editor()
+        action, mode = p.get("action", "status"), self.state["playtest"]
+        if action == "start":
+            if mode != "not":
+                raise MockError("busy", "a playtest is already running")
+            if p.get("from_x") is not None:
+                name = self.state["level"]["name"]
+                if not name.startswith(SAFE_PREFIX) and p.get("confirm_name") != name:
+                    raise MockError("level_protected", "from_x places a temporary start position")
+                self.temp_start_pos = float(p["from_x"])
+            self.state["playtest"] = "playing"
+        elif action == "stop":
+            self.state["playtest"] = "not"
+            self.temp_start_pos = None
+        elif action == "pause":
+            if mode != "playing":
+                raise MockError("not_in_playtest", "nothing is playing")
+            self.state["playtest"] = "paused"
+        elif action == "resume":
+            if mode != "paused":
+                raise MockError("not_in_playtest", "playtest isn't paused")
+            self.state["playtest"] = "playing"
+        elif action != "status":
+            raise MockError("invalid_params", "bad action")
+        return {"playtest": self.state["playtest"], "temp_start_pos": self.temp_start_pos is not None}
+
+    def _capture_frames(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_editor()
+        if self.state["playtest"] == "not":
+            raise MockError("not_in_playtest", "start a playtest first")
+        count = int(p.get("count", 10))
+        if not 1 <= count <= 120:
+            raise MockError("invalid_params", "count must be 1-120")
+        job = f"job{len(self.jobs) + 1}"
+        frames = [self.capture(f"{job}_frame_{i:03d}") for i in range(count)]
+        self.jobs[job] = {"job": job, "state": "done", "error": None, "frames": frames}
+        return {"job": job, "count": count, "interval_ms": p.get("interval_ms", 250)}
+
+    def _job_status(self, p: dict[str, Any]) -> dict[str, Any]:
+        if p.get("job") not in self.jobs:
+            raise MockError("not_found", "no such job")
+        return self.jobs[p["job"]]
 
     # -- default commands --------------------------------------------------------
     def _status(self, p: dict[str, Any]) -> dict[str, Any]:
