@@ -126,7 +126,6 @@ BRIDGE_COMMAND(get_music) {
 	auto s = lel->m_levelSettings;
 	auto guidelines = matjson::Value::array();
 	std::string raw = s ? std::string(s->m_guidelineString) : "";
-	if (raw.empty()) raw = std::string(lel->m_guidelineString);
 	auto parts = utils::string::split(raw, "~");
 	for (std::size_t i = 0; i + 1 < parts.size(); i += 2) {
 		if (parts[i].empty()) continue;
