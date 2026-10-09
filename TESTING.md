@@ -66,8 +66,17 @@ called **CLAUDE test** (created if missing, emptied and rebuilt if it exists).
 Useful extra: `py tests\e2e_bridge.py --mock` runs the same script against a fake bridge with no GD at
 all — if that fails too, the problem is the Python side, not the mod.
 
+Then, still in the editor on "CLAUDE test": `py tests\e2e_extra_bridge.py` checks every remaining
+tool (modify, undo/redo, backups/restore, playtest from x, whole-level replace, switching levels from
+inside the editor). It creates a level "CLAUDE switch test" once and reuses it.
+
 ## Results
 - 2026-10-09, run by Claude on Distanax's PC at his request: mod v0.2.0 installed via section 1, loads
   (`GD Bridge v0.2.0 listening on 127.0.0.1:47821`, /health ok, status reports Geode v5.10.1 / GD 2.2081).
   First e2e run 12/13 (object y reported 90 too high; region screenshot captured a half-redrawn view);
   both fixed in 163a3cb; second run **13/13 ALL PASSED**, screenshot and frames checked by eye.
+- 2026-10-09, extra live checks: restore_backup crashed GD on 1.0.0 (new editor layer built while the
+  old one ran) -> 1.0.1 stages every editor switch; 1.0.1's switch to removeObject(noUndo=true) killed
+  GD on the first removal -> 1.0.2 reverts to the proven flags. **v1.0.2: e2e 13/13 + extra 16/16, two
+  consecutive runs.** (Left behind on purpose: levels "CLAUDE test" and "CLAUDE switch test" —
+  delete them in GD whenever you like; the bridge never deletes levels.)

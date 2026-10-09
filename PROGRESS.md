@@ -113,12 +113,24 @@ up the level string first; never upload levels online.
   node y), screenshot aims -> waits 150 ms off-thread -> captures (runOnMainThread helper). GD restarted
   (CLAUDE test saved first, graceful close) with the new build: e2e run 2 **13/13**, screenshot and
   frames verified visually. **Acceptance 2 and 4 met.** Version 1.0.0, tag v1.0.0.
+- 2026-10-09: Live-tested the tools the e2e skips (new tests/e2e_extra_bridge.py). Found and fixed:
+  (1) restore_backup / set_level_string / switching levels from the editor CRASHED GD — a new
+  LevelEditorLayer was built while the old one still ran (access violation in
+  GameObject::shouldBlendColor from the old layer's updateVisibility). 1.0.1: those commands run
+  off-thread in stages: EditorPauseLayer::onExitEditor -> wait until no editor and no transition ->
+  open -> wait until up (Level.cpp leaveEditorBlocking/openEditorBlocking/reloadOpenLevel; client
+  timeout 60 s). (2) 1.0.1 also switched removals to removeObject(obj, true) to keep GD's undo clean —
+  that killed GD on the first removal (no crash handler, no WER event). 1.0.2 reverts to the proven
+  removeObject(obj, false) everywhere; undo on tool edits is documented as unreliable (use
+  restore_backup). **v1.0.2: e2e 13/13 + extra 16/16, twice in a row.** The routine was already
+  deleted by Distanax. Task 53 done; tag v1.0.2.
 
 ## Next
-**All five acceptance criteria are met.** Only task 53's last step remains: Distanax deletes the
-"gd-bridge continue" routine at https://claude.ai/code/routines (the API can't delete routines).
-Future work, not part of this mission: live-test the tools the e2e doesn't cover (undo/redo,
-restore_backup, modify_objects, playtest from_x, get_music); friendly names for more trigger types.
+**Mission complete** (all 53 tasks, all 5 acceptance criteria, verified live on v1.0.2).
+Lessons for future mod work: never swap a live-proven GD call for an untested variant without a live
+run; never build a LevelEditorLayer while another exists; re-run both e2e scripts after any mod change.
+Possible next steps (new work, ask Distanax first): friendly names for more trigger types; use the
+bridge to build Thermal Lock Section 1 live (set_level_string from heatseeker.py).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).

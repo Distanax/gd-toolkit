@@ -66,10 +66,10 @@ from a gdlib build) -> `screenshot` to check the layout -> `playtest start` + `c
 `playtest stop` to watch it -> `save_level`. Distanax still does the real playtest.
 
 **Known limits (2026-10-09):**
-- **Verified in-game 2026-10-09** (Geode v5.10.1, GD 2.2081): `tests/e2e_bridge.py` passes 13/13 live
-  (create/open, add, read back, triggers, region screenshot, playtest + frames, save). Tools it does
-  not exercise (undo/redo, restore_backup, modify_objects, playtest from_x, get_music) are mock-tested
-  only so far.
+- **Verified in-game 2026-10-09 on v1.0.2** (Geode v5.10.1, GD 2.2081), twice in a row:
+  `tests/e2e_bridge.py` 13/13 and `tests/e2e_extra_bridge.py` 16/16 — every tool, including
+  set_level_string/restore_backup reloads, switching levels from inside the editor, modify_objects,
+  playtest from_x and frames. Re-run both after any mod change (TESTING.md section 2).
 - Windows only (the mod uses Winsock; CI builds Win64 only).
 - **Don't use `undo` on tool edits.** GD's history records the objects a tool removes but not the
   ones it creates, so undo after `modify_objects` leaves a duplicate (measured live). Revert tool
