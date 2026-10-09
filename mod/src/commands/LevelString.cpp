@@ -30,9 +30,7 @@ BRIDGE_COMMAND(set_level_string) {
 		throw RpcError("invalid_params", "level_string must be a raw level string (header;objects;...)");
 
 	auto backup = backupLevel(lel, "set_level_string");
-	auto level = lel->m_level;
-	level->m_levelString = ZipUtils::compressString(str, false, 0);
-	CCDirector::sharedDirector()->replaceScene(LevelEditorLayer::scene(level, false));
+	replaceLevelString(lel, str);
 	return matjson::makeObject({
 		{"name", levelName(lel)},
 		{"backup", utils::string::pathToString(backup)},

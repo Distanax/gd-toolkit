@@ -37,6 +37,21 @@ void requireWritable(LevelEditorLayer* lel, matjson::Value const& params) {
 			SAFE_PREFIX, name));
 }
 
+void replaceLevelString(LevelEditorLayer* lel, std::string const& levelString) {
+	auto level = lel->m_level;
+	level->m_levelString = ZipUtils::compressString(levelString, false, 0);
+	CCDirector::sharedDirector()->replaceScene(LevelEditorLayer::scene(level, false));
+}
+
+void saveEditorLevel(LevelEditorLayer* lel) {
+	// The pause menu owns GD's own save routine (level string, object count, length...). It is created
+	// but never shown or entered.
+	auto pause = EditorPauseLayer::create(lel);
+	if (!pause) throw RpcError("internal", "could not create EditorPauseLayer to save");
+	pause->saveLevel();
+	LocalLevelManager::sharedState()->save();
+}
+
 std::filesystem::path backupRoot() {
 	return Mod::get()->getSaveDir() / "backups";
 }

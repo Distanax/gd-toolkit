@@ -85,9 +85,10 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 38 done: playtest(action start|stop|pause|resume|status, from_x?, from_y?, confirm_name?) in commands/Playtest.cpp. from_x = temporary start pos (write: CLAUDE guard + backup); a $modify hook on LevelEditorLayer::onStopPlaytest removes it however the playtest ends (our stop or GD button), so it never gets saved into the level. Committed with 39.
 - 2026-10-09: Task 39 done: capture_frames(count 1-120, interval_ms >= 16, hide_ui) -> {job}; a CCObject FrameJob scheduled on the CCScheduler captures each frame on the main thread (render texture + newCCImage) and encodes PNGs on detached worker threads (no stutter in the recorded playtest); stops early if the playtest ends. job_status(job) runs off-thread under a mutex -> {state running|done|failed, error, frames (sorted paths)}.
 - 2026-10-09: Task 40 done: MCP playtest and capture_frames (starts the job, polls job_status until done, returns frames as images in order + metadata; max_width default 640). Mock implements playtest state, from_x safety and frame jobs; 29 tests pass.
+- 2026-10-09: Task 41 done: M7 green + released (995e385). Level management research: save = EditorPauseLayer::create(lel)->saveLevel() (GD own save routine; layer never shown) + LocalLevelManager::sharedState()->save() (GManager::save, writes CCLocalLevels.dat); create = GameLevelManager::createNewLevel(); local list = LocalLevelManager::m_localLevels; open = replaceScene(LevelEditorLayer::scene(level,false)); music = GJGameLevel m_songID/m_audioTrack/m_songIDs + GJBaseGameLayer::m_levelSettings m_songOffset/m_fadeIn/m_fadeOut/m_guidelineString. Refactor: replaceLevelString() and saveEditorLevel() moved into Level.cpp (shared by set_level_string, restore_backup, save_level). Also: GitHub REST API is 60 req/h unauthenticated; CI is now watched via the latest release tag (moves only after a green build) + the workflow badge.
 
 ## Next
-- Wait for CI on M7; then M8 (save/create/open level, music).
+- Tasks 42-44.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).

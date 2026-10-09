@@ -61,7 +61,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 40. MCP tools `playtest`, `capture_frames` (returns images)
 
 ## M8 — Level management + music
-- [ ] 41. Research: saving from the editor, LocalLevelManager, creating/opening levels by name in 2.2081
+- [x] 41. Research: saving from the editor, LocalLevelManager, creating/opening levels by name in 2.2081
 - [ ] 42. Mod: `save_level`
 - [ ] 43. Mod: `create_level(name, song_id)` (forces "CLAUDE " prefix) and `open_level(name)`
 - [ ] 44. Mod: `get_music` (song ID, offset, guidelines/BPM if set)

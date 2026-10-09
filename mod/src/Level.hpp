@@ -29,6 +29,14 @@ void requireWritable(LevelEditorLayer* lel, matjson::Value const& params);
 // a write must never proceed without its backup.
 std::filesystem::path backupLevel(LevelEditorLayer* lel, std::string const& reason);
 
+// Replaces the level's whole content and reloads the editor so GD re-parses header + objects.
+// Caller has already checked the guard and taken the backup.
+void replaceLevelString(LevelEditorLayer* lel, std::string const& levelString);
+
+// Saves the open editor level into GD's level list (EditorPauseLayer::saveLevel) and writes
+// CCLocalLevels.dat to disk.
+void saveEditorLevel(LevelEditorLayer* lel);
+
 std::filesystem::path backupRoot();
 std::string sanitizeFileName(std::string const& name);
 
