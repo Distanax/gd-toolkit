@@ -53,7 +53,8 @@ comparison against corpus levels of the target tier (numbers cited) and positive
 
 ## 7. Structure
 - [ ] Hybrid structuring: simple grid-aligned shapes, structures point at essential points, block
-  sides stop skips (pending: task 15). Evidence: screenshots + skip tests in playtest.
+  sides stop skips; no Free Move (notes/making-structures.md; hybrid method: notes/creating-gameplay.md).
+  Evidence: grid check, screenshots, sim skip tests + Distanax trying to break it.
 
 ## 8. Decoration
 - [ ] Decent visuals [R p.9]: block designs clearly differ from the background (value contrast);
