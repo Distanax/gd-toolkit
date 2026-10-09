@@ -95,9 +95,10 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 48 done: MCP undo, redo, list_backups, restore_backup; mock implements level list, prepare-to-leave rules, undo/redo stacks and backups; 35 tests pass (fixture arg renamed tool_name, positional-only, so tools can take a `name` argument).
 - 2026-10-09: Task 49 done: tests/e2e_bridge.py (acceptance 4): drives the real MCP server in-process (tools -> BridgeClient -> mod). Opens or creates "CLAUDE test", empties it, adds 11 blocks (one in group 1), 2 spikes, a yellow orb and a move trigger (group 1, move_y 60), checks counts/positions/trigger keys via list_objects + get_triggers + get_level_string, screenshots the region, playtests with capture_frames(6 x 500 ms = 3 s), stops, saves. Writes out/e2e/<UTC>/ (report.json, screenshot, frames, level_string.txt). --mock runs it against MockBridge: 13/13 pass locally and it now runs in Python CI. M8/M9 mod build failed once (LevelEditorLayer has no m_guidelineString) and was fixed in 5786b7a.
 - 2026-10-09: Task 50 done: TESTING.md section 2: update mod + server, run `py tests\e2e_bridge.py` from the repo, what to expect in GD and the console, what to report. Task 51 marked blocked on Distanax.
+- 2026-10-09: Task 52 done: CLAUDE.md "gd-bridge tool reference": chain, safety rules, table of all 21 tools with example arguments (checked programmatically: every registered tool is documented), selectors, object names, friendly properties, typical loop, known limits (not yet verified in-game, Windows only, reload loses undo, uids change on modify, from_x start pos uses default cube 1x settings, capture costs/limits and captures not pruned, friendly keys cover move trigger only, async create_level, 10 s main-thread deadline). Roadmap item 1 updated. **Acceptance 5 met.** Version bump to 0.2.0 (mod + server) in the same push; it also re-triggers the mod build, because GitHub never started a run for the 5786b7a fix.
 
 ## Next
-- Task 52: CLAUDE.md tool reference + known limits.
+- Wait for the v0.2.0 mod build. Then only blocked tasks remain (2, 8, 51) plus 53 (needs 8 + 51).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).

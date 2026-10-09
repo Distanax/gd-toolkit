@@ -76,5 +76,5 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 49. tests/e2e_bridge.py: create "CLAUDE test", add blocks/spikes/orb/move trigger, read back, screenshot, playtest 3 s with frames, save (acceptance 4)
 - [x] 50. TESTING.md: how to run the e2e test and what to report
 - [ ] 51. [blocked: Distanax] (TESTING.md section 2) Run the e2e test and report
-- [ ] 52. CLAUDE.md: every tool with examples + known limits (acceptance 5)
+- [x] 52. CLAUDE.md: every tool with examples + known limits (acceptance 5)
 - [ ] 53. Tag v1.0.0 release; delete the "gd-bridge continue" routine once acceptance 2 and 4 are confirmed
