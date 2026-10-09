@@ -4,13 +4,8 @@
       "owner": "cxx-error",
       "pattern": [
         {
-          "regexp": "^\\s*(?:\\d+>)?(([^\\s(][^(]*)\\((\\d+)(?:,(\\d+))?\\)\\s*:\\s+(?:fatal\\s+)?(error)\\s*(\\w*)\\s*:\\s*.*)$",
-          "file": 2,
-          "line": 3,
-          "column": 4,
-          "severity": 5,
-          "code": 6,
-          "message": 1
+          "regexp": "^\\s*(?:\\d+>)?((\\S.*?)\\((\\d+)(?:,(\\d+))?\\)\\s*:\\s+(?:fatal\\s+)?(error)\\s*(\\w*)\\s*:.*)$",
+          "message": 1, "file": 2, "line": 3, "column": 4, "severity": 5, "code": 6
         }
       ]
     },
@@ -18,12 +13,8 @@
       "owner": "cxx-error-colon",
       "pattern": [
         {
-          "regexp": "^\\s*(([A-Za-z]:[\\/][^:]+|/[^:]+):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(error):\\s*.*)$",
-          "file": 2,
-          "line": 3,
-          "column": 4,
-          "severity": 5,
-          "message": 1
+          "regexp": "^\\s*(([A-Za-z]:[\\\\/].*?|/.*?):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(error):.*)$",
+          "message": 1, "file": 2, "line": 3, "column": 4, "severity": 5
         }
       ]
     },
@@ -31,11 +22,8 @@
       "owner": "link-error",
       "pattern": [
         {
-          "regexp": "^\\s*(lld-link|LINK|link\\.exe|ld\\.lld)\\s*:\\s*(?:fatal\\s+)?(error)\\s*(\\w*)\\s*:?\\s*(.*)$",
-          "file": 1,
-          "severity": 2,
-          "code": 3,
-          "message": 4
+          "regexp": "^\\s*((lld-link|LINK|link\\.exe|ld\\.lld)\\s*:\\s*(?:fatal\\s+)?(error)\\s*(\\w*)\\s*:?.*)$",
+          "message": 1, "file": 2, "severity": 3, "code": 4
         }
       ]
     },
@@ -43,11 +31,8 @@
       "owner": "cmake-error",
       "pattern": [
         {
-          "regexp": "^(CMake Error)(?: at (.+?):(\\d+))?(.*)$",
-          "severity": 1,
-          "file": 2,
-          "line": 3,
-          "message": 4
+          "regexp": "^((CMake Error)(?: at (.+?):(\\d+))?.*)$",
+          "message": 1, "severity": 2, "file": 3, "line": 4
         }
       ]
     }
