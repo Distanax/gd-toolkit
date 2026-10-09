@@ -56,8 +56,8 @@ Mission and acceptance criteria: PROGRESS.md.
 
 ## M7 — Playtest + frame capture
 - [x] 37. Research: editor playtest API (onPlaytest/onStopPlaytest, start from x / start pos)
-- [ ] 38. Mod: `playtest(start|stop, from_x?)`
-- [ ] 39. Mod: `capture_frames(n, interval)` during playtest (async job, poll for results)
+- [x] 38. Mod: `playtest(start|stop, from_x?)`
+- [x] 39. Mod: `capture_frames(n, interval)` during playtest (async job, poll for results)
 - [ ] 40. MCP tools `playtest`, `capture_frames` (returns images)
 
 ## M8 — Level management + music

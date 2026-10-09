@@ -82,9 +82,11 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 35 done: screenshot(x?, y?, zoom? | region?, hide_ui=true, restore_camera=true): aims the editor camera (not during playtest), hides EditorUI for the shot, captures to <save dir>/captures/shot_<UTC>_<n>.png, restores camera; works outside the editor as a plain screen capture. Returns {path, width, height, camera}.
 - 2026-10-09: Task 36 done: MCP move_camera (no args = read) and screenshot -> [ImageContent PNG, JSON metadata] (tool registered with structured_output=False: an Image cannot be structured output). Reads the PNG the mod wrote (same machine), downscales to max_width (default 1280) with Pillow (new dependency). Mock writes real PNGs; 25 tests pass.
 - 2026-10-09: Task 37 done: M6 green (ce9c411, both workflows). Playtest research: EditorUI::onPlaytest/onStopPlaytest(sender) (win addresses), LevelEditorLayer::onPausePlaytest/onResumePlaytest (inline), m_playbackMode. Start point: LevelEditorLayer::findStartPosObject picks the enabled start pos (ID 31) with the highest m_startSettings->m_targetOrder, then rightmost -> from_x = temporary StartPosObject with targetOrder 1e6. LevelEditorLayer::onStopPlaytest has a win address, so it can be hooked to clean up.
+- 2026-10-09: Task 38 done: playtest(action start|stop|pause|resume|status, from_x?, from_y?, confirm_name?) in commands/Playtest.cpp. from_x = temporary start pos (write: CLAUDE guard + backup); a $modify hook on LevelEditorLayer::onStopPlaytest removes it however the playtest ends (our stop or GD button), so it never gets saved into the level. Committed with 39.
+- 2026-10-09: Task 39 done: capture_frames(count 1-120, interval_ms >= 16, hide_ui) -> {job}; a CCObject FrameJob scheduled on the CCScheduler captures each frame on the main thread (render texture + newCCImage) and encodes PNGs on detached worker threads (no stutter in the recorded playtest); stops early if the playtest ends. job_status(job) runs off-thread under a mutex -> {state running|done|failed, error, frames (sorted paths)}.
 
 ## Next
-- Tasks 38-40.
+- Task 40.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
