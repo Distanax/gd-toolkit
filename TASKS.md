@@ -49,7 +49,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 32. MCP tools for M5 with friendly arguments (names like "spike", "move_trigger") + tests
 
 ## M6 — Camera + screenshots
-- [ ] 33. Research: editor camera (EditorUI / m_objectLayer position + scale), CCRenderTexture -> PNG in v5
+- [x] 33. Research: editor camera (EditorUI / m_objectLayer position + scale), CCRenderTexture -> PNG in v5
 - [ ] 34. Mod: `move_camera(x, y, zoom)` and `get_camera`
 - [ ] 35. Mod: `screenshot` (current view or region; hide editor UI optionally) -> PNG file + base64
 - [ ] 36. MCP tools `move_camera`, `screenshot` (returns an MCP image)
