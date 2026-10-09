@@ -47,9 +47,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 14 done: notes/making-fast-gameplay.md (illusion2, kbtrains, NotAModerator): relative speed, use with musical energy, contrast without huge jumps, readability, click rate, 3-4x portals/timewarp/move-trigger speed. notes/making-slow-gameplay.md (komatic5, Half-Cooked Ramen): slow parts are designed (fakes, slopes, mode switches, correct path first). CHECKLIST pacing/mode-fit rows now cited.
 - 2026-10-09: Task 15 done: notes/making-structures.md (komatic5, etherail): essential points, structures point at them, block sides/hazards stop skips, grid snap and simple shapes; grid + skip checks. notes/making-duals.md (e.clypse, naem.less, ChuckOlate): gravity linking (cube+wave share), symmetrical/asymmetrical/2-player, one focus icon, borders 9/10 blocks, offset duals, gimmicks. CHECKLIST structure row cited.
 - 2026-10-09: Task 16 done: notes/advanced-hitboxes.md, frame-perfects-alignment.md (MateussDev, NotAModerator), refresh-rates.md (graylasagna): main 30x30 AABB / inner solid / OBB (coyote time) / slope circle, subframes, 240 FPS physics in 2.2, 2.208 click-between-steps makes physics rate-independent, frame-perfect types and mode difficulty order, alignment resets on landing. Linter thresholds: <=1 step = frame-perfect error, 2-5 steps = hard timing. **M2 complete.**
+- 2026-10-09: Task 17 done: notes/mechanics-1-intro.md (komatic5, NotAModerator): extensive/immersive/fair mechanics, introduce -> experiment -> avoid burnout, skill chains. notes/mechanics-2-gameplay-loops.md (komatic5, etherail): loops easy/expandable/rewarding, VEIL vs DAYA cases. Mapped to a skill-chain table in PLAN.md and a first-use easing check in the fairness linter.
 
 ## Next
-- Task 17: notes mechanics-1 + mechanics-2.
+- Task 18: notes mechanics-3/4/5.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's
