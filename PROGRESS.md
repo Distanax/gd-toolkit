@@ -89,9 +89,11 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 42 done: save_level (guard + backup + saveEditorLevel). Committed with 43-44 in commands/Levels.cpp.
 - 2026-10-09: Task 43 done: create_level(name, song_id?, audio_track?): forces the "CLAUDE " prefix, refuses duplicates, createNewLevel + name/song, saves CCLocalLevels.dat, opens it in the editor. open_level(name, confirm_name?): exact name, non-CLAUDE levels need confirm_name. Both call prepareToLeave(): refuses while playing a level or playtesting, refuses to leave a non-CLAUDE level open in the editor (would discard Distanax edits), and backs up + saves a CLAUDE level before switching. Extra: list_levels(claude_only?, limit?).
 - 2026-10-09: Task 44 done: get_music: song_id, audio_track, custom_song, song_ids, offset, fade_in/out, guidelines [{time, color}] parsed from the guideline string.
+- 2026-10-09: Task 46 done: undo / redo via EditorUI::undoLastAction/redoLastAction (only if m_undoObjects/m_redoObjects non-empty; guard + backup first). Committed with 47.
+- 2026-10-09: Task 47 done: list_backups(level?, limit?) newest first {file, bytes}; restore_backup(file, level?, confirm_name?): bare file names only (no path traversal), backs up the current state, then replaceLevelString.
 
 ## Next
-- Tasks 46-47 (same push).
+- Wait for mod CI; tasks 45 + 48 (MCP tools for M8/M9).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).

@@ -68,8 +68,8 @@ Mission and acceptance criteria: PROGRESS.md.
 - [ ] 45. MCP tools for M8
 
 ## M9 — Undo/redo + backups
-- [ ] 46. Mod: `undo`, `redo`
-- [ ] 47. Mod: `list_backups`, `restore_backup` (restore itself backs up first)
+- [x] 46. Mod: `undo`, `redo`
+- [x] 47. Mod: `list_backups`, `restore_backup` (restore itself backs up first)
 - [ ] 48. MCP tools for M9
 
 ## M10 — End-to-end + docs
