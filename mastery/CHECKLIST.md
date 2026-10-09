@@ -25,9 +25,11 @@ comparison against corpus levels of the target tier (numbers cited) and positive
 
 ## 3. Sync
 - [ ] Inputs map to chosen song layers; strong notes -> big movements, weak -> small; holds on
-  sustains (layer choice: notes/making-sync.md; strong/weak notes + holds pending: task 21 pacing-4 —
-  making-sync does not state them). Evidence: sync checker report.
-- [ ] Mode/speed changes on strong beats (4/4 strength 1,3,2,4) (pending: task 21 — not in making-sync).
+  sustains / emphasis (notes/pacing-4-note-representation.md; layer choice: notes/making-sync.md).
+  Evidence: sync checker report.
+- [ ] Gamemode changes on strong beats (4/4 strength order 1 3 2 4) (notes/pacing-4-note-representation.md);
+  speed changes likewise = our working extension (not stated by the guide). Consistent syncopation;
+  repeated phrases keep their click pattern unless deliberately varied. Evidence: sync checker.
   Evidence: sync checker portal report.
 - [ ] Motifs repeat with the music, slight variation (notes/creating-gameplay.md). Evidence: section spec vs layout.
 

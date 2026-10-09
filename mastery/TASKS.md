@@ -33,7 +33,7 @@ Notes go to `mastery/notes/<guide>.md` (one file per guide, cited). Lessons go t
 - [x] 18. [offline] notes: mechanics-3-feedback, mechanics-4-decision-making, mechanics-5-limitations-strategy
 - [x] 19. [offline] notes: pacing-1-basics, pacing-2-progression
 - [x] 20. [offline] notes: pacing-3-fairness
-- [ ] 21. [offline] notes: pacing-4-note-representation, pacing-5-intensity
+- [x] 21. [offline] notes: pacing-4-note-representation, pacing-5-intensity
 
 ## M4 — Basic deco notes (priority 4)
 - [ ] 22. [offline] notes: how-to-decorate, creating-details, using-deco-objects

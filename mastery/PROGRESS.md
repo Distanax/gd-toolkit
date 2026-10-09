@@ -51,9 +51,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 18 done: notes mechanics-3-feedback (illusion2, sparktwee), mechanics-4-decision-making (intercomprehensible et al.), mechanics-5-limitations-strategy (illusion2 et al.): general game design; applicable parts recorded (consistent object behaviour, effects as feedback, risk/reward on branches, motif reuse in new contexts, readability over strategy for a classic level).
 - 2026-10-09: Task 19 done: notes/pacing-1-basics.md (komatic5, azgamez, creeperiv): flow conditions (clear goals, rapid feedback, adequate challenge), micro flow. notes/pacing-2-progression.md (komatic5, Half-Cooked Ramen): macro flow, chart difficulty+intensity per section, skill ordering, typical whole-level shape, match the song. Mapped to plan-vs-measured section charts and delayed-death checks.
 - 2026-10-09: Task 20 done: notes/pacing-3-fairness.md (TDP9, NotAModerator): fairness = can teach its rules; coyote-time platform margins, lenient orb/portal hitboxes, No Touch + inner hazard hitboxes, predictability, helping, mechanic easing, micro-pacing leniency, avoid hand-holding (SLAM). No numeric thresholds in the guide (ours from sim/corpus). Fairness linter rule table; CHECKLIST clarity/fairness rows cited.
+- 2026-10-09: Task 21 done: notes/pacing-4-note-representation.md (illusion2, sparktwee): movement size = note strength, holds add emphasis, sound division, direction, repetition/breaking it, form, beat strength 4/4 "1 3 2 4" (3/4 "1 3 2"), syncopation consistency, gamemode changes on strong beats (speed changes NOT stated: kept as our working extension). notes/pacing-5-intensity.md (TDP9): intensity is felt; levers; breaks between intense parts. CHECKLIST sync rows now cited. **M3 complete.**
 
 ## Next
-- Task 21: notes pacing-4 + pacing-5.
+- Task 22: deco notes how-to-decorate, creating-details, using-deco-objects.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's
