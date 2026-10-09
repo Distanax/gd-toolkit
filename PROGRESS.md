@@ -67,9 +67,11 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 20 done: Level-string plan: read = LevelEditorLayer::getLevelString() (raw, header;obj;obj;...). Replace = backup, m_level->m_levelString = ZipUtils::compressString(str, false, 0) (CC_DLL, reimplemented in Geode loader/src/cocos2d-ext/ZipUtils.cpp so callable on Windows), then CCDirector::replaceScene(LevelEditorLayer::scene(level, false)) so GD re-parses header + objects (colours, settings). Trade-off: undo history is lost on replace (backups cover it). Object edits use createObjectsFromString(str, noUndo=false, noLimit=true) and removeObject(obj, false); GameObject: m_uniqueID, m_objectID, m_groups/m_groupCount, m_isTrigger, getSaveString(layer), m_scaleX/Y, m_editorLayer; EditorUI::deselectAll(). Python CI green (a07a3a9).
 - 2026-10-09: Task 22 done: Level.cpp backupLevel(): getLevelString() -> <save dir>/backups/<sanitised name>/<UTC yyyymmddThhmmssmmmZ>_<reason>.txt via writeStringSafe, newest 200 kept per level; throws (write aborted) if the backup fails. Committed with 23.
 - 2026-10-09: Task 23 done: requireWritable(): allowed only if the level name starts with "CLAUDE " or params.confirm_name == exact name, else RpcError level_protected (message tells the caller how to confirm). Also requireEditor() (not_in_editor) and requireNotPlaytesting() (busy).
+- 2026-10-09: Task 21 done: get_level_string -> {name, object_count, level_string} (raw). Committed with 24.
+- 2026-10-09: Task 24 done: set_level_string(level_string, confirm_name?): editor + not playtesting + writable, backup, compressString into m_level->m_levelString, replaceScene(LevelEditorLayer::scene(level,false)). Returns {name, backup, reloaded}.
 
 ## Next
-- Tasks 21 + 24: get/set_level_string.
+- Wait for CI; then task 25 (MCP tools for level strings) and 26-32 (objects; mod code drafted in commands/Objects.cpp, server side in objects.py).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
