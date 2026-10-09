@@ -25,10 +25,10 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 14. Mod: `status` command (scene, editor open, level name/ID, object count, GD/Geode/mod versions)
 
 ## M3 — Python MCP server
-- [ ] 15. server/ package skeleton (pyproject, `gd-bridge-mcp` entry point, FastMCP stdio, Python >= 3.10)
-- [ ] 16. Bridge client: discover bridge.json, token auth, timeouts, clear "GD not running / mod not loaded" errors
+- [x] 15. server/ package skeleton (pyproject, `gd-bridge-mcp` entry point, FastMCP stdio, Python >= 3.10)
+- [x] 16. Bridge client: discover bridge.json, token auth, timeouts, clear "GD not running / mod not loaded" errors
 - [ ] 17. Mock bridge (in-process fake mod) + pytest suite running against it; add a Python CI job
-- [ ] 18. Tool: `status`
+- [x] 18. Tool: `status`
 - [ ] 19. README: one-command pip install + Claude desktop config snippet (acceptance 3)
 
 ## M4 — Level string read/write + safety

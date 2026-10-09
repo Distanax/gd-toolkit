@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gd-bridge-mcp"
+version = "0.1.0"
+description = "MCP server that drives the Geometry Dash editor through the GD Bridge Geode mod"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Distanax" }]
+dependencies = ["mcp>=2.3,<3"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.scripts]
+gd-bridge-mcp = "gd_bridge_mcp.server:main"
+
+[project.urls]
+Source = "https://github.com/Distanax/gd-toolkit"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gd_bridge_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

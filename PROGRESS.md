@@ -59,9 +59,12 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 12 done: Auth.cpp: 32 random bytes (MSVC random_device = OS CSPRNG) as hex, bridge.json {protocol, port, token, pid, mod_version} written atomically to the mod save dir, constant-time token compare. Wired into main.cpp with task 13. Workflow: matcher file in path filter + concurrency group (no racing release jobs).
 - 2026-10-09: Task 13 done: Rpc.cpp: command registry (BRIDGE_COMMAND macros), main-thread dispatch via queueInMainThread + promise with 10 s timeout, RpcError -> protocol error codes, param helpers. main.cpp: POST /rpc with token auth, JSON body {id, method, params} -> {id, ok, result|error}. ping runs off-thread.
 - 2026-10-09: Task 14 done: status command (in commands/Core.cpp, same commit as 13): scene (first child of running scene), in_editor, in_level, playtest (not/playing/paused), level {name, id, song_id, audio_track, object_count}, versions {mod, geode, gd, protocol}.
+- 2026-10-09: Task 15 done: server/ package gd-bridge-mcp 0.1.0 (hatchling, Python >= 3.10, mcp>=2.3,<3, console script gd-bridge-mcp -> MCPServer("gd-bridge").run(transport="stdio")). Committed together with 16 and 18.
+- 2026-10-09: Task 16 done: client.py BridgeClient: reads bridge.json (GD_BRIDGE_FILE override, else %LOCALAPPDATA%/GeometryDash/geode/mods/distanax.gd-bridge/), POSTs /rpc with the token, re-reads bridge.json once on unauthorized/connection failure (GD restarted), maps errors to BridgeError(code). Deliberately no pid liveness check: os.kill(pid, 0) can terminate a process on Windows.
+- 2026-10-09: Task 18 done: MCP tool status (returns running:false with instructions instead of an error when GD/mod is not reachable). bridge_errors decorator turns BridgeError into ToolError for every other tool.
 
 ## Next
-- Wait for CI on tasks 12-14; then task 15 (server package, drafted in server/).
+- Task 17: mock bridge + pytest + Python CI.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
