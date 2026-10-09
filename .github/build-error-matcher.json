@@ -1,0 +1,40 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "cxx-error",
+      "pattern": [
+        {
+          "regexp": "^\\s*(?:\\d+>)?([^\\s(][^(]*)\\((\\d+)(?:,(\\d+))?\\)\\s*:\\s+(?:fatal\\s+)?(error)\\s*(\\w*)\\s*:\\s*(.*)$",
+          "file": 1, "line": 2, "column": 3, "severity": 4, "code": 5, "message": 6
+        }
+      ]
+    },
+    {
+      "owner": "cxx-error-colon",
+      "pattern": [
+        {
+          "regexp": "^\\s*([A-Za-z]:[\\\\/][^:]+|/[^:]+):(\\d+):(\\d+):\\s+(?:fatal\\s+)?(error):\\s*(.*)$",
+          "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+        }
+      ]
+    },
+    {
+      "owner": "link-error",
+      "pattern": [
+        {
+          "regexp": "^\\s*(lld-link|LINK|link\\.exe|ld\\.lld)\\s*:\\s*(?:fatal\\s+)?(error)\\s*(\\w*)\\s*:?\\s*(.*)$",
+          "file": 1, "severity": 2, "code": 3, "message": 4
+        }
+      ]
+    },
+    {
+      "owner": "cmake-error",
+      "pattern": [
+        {
+          "regexp": "^(CMake Error)(?: at (.+?):(\\d+))?(.*)$",
+          "severity": 1, "file": 2, "line": 3, "message": 4
+        }
+      ]
+    }
+  ]
+}

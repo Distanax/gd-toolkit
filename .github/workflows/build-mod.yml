@@ -16,6 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Turn compiler/linker/CMake errors into check-run annotations: those are readable through the
+      # public API, unlike the raw logs, so failures can be diagnosed without signing in.
+      - name: Register error matcher
+        run: echo "::add-matcher::.github/build-error-matcher.json"
+
       # SDK version comes from mod/mod.json ("geode": "5.10.1"); the action's sdk input defaults to "given".
       - name: Build the mod
         id: build
