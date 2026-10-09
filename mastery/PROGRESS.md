@@ -44,9 +44,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 11 done: notes/using-gamemodes.md (illusion2, komatic5) + notes/gameplay-objects.md (sparktwee, xplode09): per-mode fit/pitfalls table (no mode switch for 1-2 inputs, orb chains inconsistent, idle ship, wave chokepoints, swing not on ship gameplay, robot hold = note strength), orb strengths, portals, letter blocks D/J/S/H/F; derived linter checks and sim/object-ID follow-ups.
 - 2026-10-09: Task 12 done: notes/creating-gameplay.md (mesoionosphere, ChuckOlate): vision, sectioning, hybrid build method, setup groups, motifs with variation, movement flow + clean portal entry, four speed-change kinds + easing. notes/making-sync.md (e.clypse, NotAModerator): pick one layer, tools, speed-portal placement, sync playtesting. GAP: beat-strength order, holds, mode changes on strong beats are NOT in making-sync; CHECKLIST updated (motifs now cited; the rest pending task 21).
 - 2026-10-09: Task 13 done: notes/making-consistent-gameplay.md (e.clypse, psytrancegd): error types, object fixes (slope grid gap, pads, teleports, H/J-blocks), physics-based design (platforms reset momentum, portals before orbs, no orb chains, flying-mode transition risks), Options trigger; linter rule table with sim-jitter evidence. CHECKLIST consistency row now cited.
+- 2026-10-09: Task 14 done: notes/making-fast-gameplay.md (illusion2, kbtrains, NotAModerator): relative speed, use with musical energy, contrast without huge jumps, readability, click rate, 3-4x portals/timewarp/move-trigger speed. notes/making-slow-gameplay.md (komatic5, Half-Cooked Ramen): slow parts are designed (fakes, slopes, mode switches, correct path first). CHECKLIST pacing/mode-fit rows now cited.
 
 ## Next
-- Task 14: notes making-fast-gameplay + making-slow-gameplay.
+- Task 15: notes making-structures + making-duals.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's

@@ -44,8 +44,10 @@ comparison against corpus levels of the target tier (numbers cited) and positive
 
 ## 6. Pacing and speed
 - [ ] Speed changes follow the music's energy; no 0.5x->4x jumps; successive speed-ups eased;
-  3-4x only with musical energy, not overused (pending: task 14, 21). Evidence: timeline + energy map.
-- [ ] Mode fit per notes (pending: task 11): cube versatile, ship smooth/melodic, ball mid-speed
+  3-4x only with musical energy, not overused (notes/making-fast-gameplay.md, making-slow-gameplay.md;
+  speed-change kinds/easing: notes/creating-gameplay.md). Slow parts are designed, not filler.
+  Evidence: timeline + energy map.
+- [ ] Mode fit per notes/using-gamemodes.md: cube versatile, ship smooth/melodic, ball mid-speed
   repetition, UFO floaty, wave sharp/fast with leeway, robot slow holds, spider high-CPS emphasis,
   swing big arcs. Evidence: section spec vs layout.
 
