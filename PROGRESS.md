@@ -63,9 +63,10 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 16 done: client.py BridgeClient: reads bridge.json (GD_BRIDGE_FILE override, else %LOCALAPPDATA%/GeometryDash/geode/mods/distanax.gd-bridge/), POSTs /rpc with the token, re-reads bridge.json once on unauthorized/connection failure (GD restarted), maps errors to BridgeError(code). Deliberately no pid liveness check: os.kill(pid, 0) can terminate a process on Windows.
 - 2026-10-09: Task 18 done: MCP tool status (returns running:false with instructions instead of an error when GD/mod is not reachable). bridge_errors decorator turns BridgeError into ToolError for every other tool.
 - 2026-10-09: Task 17 done: mock.py MockBridge: real HTTP server speaking the protocol (token, Origin, /health, unknown_method, MockError -> error codes), writes its own bridge.json, rotate_token() simulates a GD restart, commands dict is extendable per test. tests/: client behaviour + tools through an in-process mcp.Client. Python CI (server.yml): windows+ubuntu x py3.10/3.13, installs with the README one-liner from the checkout.
+- 2026-10-09: Task 19 done: README "gd-bridge" section: one command `py -m pip install "git+https://github.com/Distanax/gd-toolkit#subdirectory=server"` (verified in a fresh venv: installs 0.1.0 + gd-bridge-mcp.exe), Claude desktop snippet (py -m gd_bridge_mcp), Claude Code one-liner. Stdio initialize verified. **Acceptance 3 met.**
 
 ## Next
-- Wait for mod CI on e684367 and Python CI; then task 19 (README install + Claude desktop config).
+- Task 20: record LevelEditorLayer / level-string research (done: ZipUtils::compressString + scene reload plan); then 21-25 (drafted in mod/src/Level.*, commands/LevelString.cpp).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).

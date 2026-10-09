@@ -29,7 +29,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 16. Bridge client: discover bridge.json, token auth, timeouts, clear "GD not running / mod not loaded" errors
 - [x] 17. Mock bridge (in-process fake mod) + pytest suite running against it; add a Python CI job
 - [x] 18. Tool: `status`
-- [ ] 19. README: one-command pip install + Claude desktop config snippet (acceptance 3)
+- [x] 19. README: one-command pip install + Claude desktop config snippet (acceptance 3)
 
 ## M4 — Level string read/write + safety
 - [ ] 20. Research: LevelEditorLayer / GJGameLevel bindings for 2.2081 (getLevelString, createObjectsFromString, removeAllObjects)
