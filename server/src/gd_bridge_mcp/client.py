@@ -38,7 +38,7 @@ NOT_RUNNING = (
 
 
 class BridgeClient:
-    def __init__(self, discovery_path: Path | None = None, timeout: float = 20.0):
+    def __init__(self, discovery_path: Path | None = None, timeout: float = 60.0):
         self.discovery_path = discovery_path or default_discovery_path()
         self.timeout = timeout
         self._ids = itertools.count(1)

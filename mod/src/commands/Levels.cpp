@@ -3,6 +3,8 @@
 #include "../Level.hpp"
 #include "../Rpc.hpp"
 
+#include <memory>
+
 #include <Geode/Geode.hpp>
 
 using namespace geode::prelude;
@@ -44,8 +46,23 @@ void prepareToLeave() {
 	}
 }
 
-void openInEditor(GJGameLevel* level) {
-	CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(0.3f, LevelEditorLayer::scene(level, false)));
+// Socket thread: leave any open editor (already saved by prepareToLeave), open `level`, wait until it's up,
+// then drop the retain the main-thread step took.
+void switchTo(GJGameLevel* level) {
+	auto release = [level] {
+		runOnMainThread([level](matjson::Value const&) {
+			level->release();
+			return matjson::Value(true);
+		}, matjson::Value::object());
+	};
+	try {
+		leaveEditorBlocking();
+		openEditorBlocking(level);
+	} catch (...) {
+		release();
+		throw;
+	}
+	release();
 }
 
 matjson::Value levelSummary(GJGameLevel* lvl) {
@@ -75,35 +92,53 @@ BRIDGE_COMMAND(save_level) {
 }
 
 // params: name (gets the "CLAUDE " prefix if missing), song_id? (Newgrounds/custom), audio_track? (official)
-BRIDGE_COMMAND(create_level) {
-	auto name = paramString(params, "name");
-	if (!isSafeName(name)) name = std::string(SAFE_PREFIX) + name;
-	if (name.size() > 64) throw RpcError("invalid_params", "name too long (max 64 characters)");
-	if (findLevel(name)) throw RpcError("invalid_params", fmt::format("a level named '{}' already exists; use open_level", name));
-	prepareToLeave();
+// Off-thread: returns once the new level is open in the editor.
+BRIDGE_COMMAND_OFF_THREAD(create_level) {
+	auto holder = std::make_shared<GJGameLevel*>(nullptr);
+	auto info = runOnMainThread([holder](matjson::Value const& p) {
+		auto name = paramString(p, "name");
+		if (!isSafeName(name)) name = std::string(SAFE_PREFIX) + name;
+		if (name.size() > 64) throw RpcError("invalid_params", "name too long (max 64 characters)");
+		if (findLevel(name))
+			throw RpcError("invalid_params", fmt::format("a level named '{}' already exists; use open_level", name));
+		prepareToLeave();
 
-	auto level = GameLevelManager::sharedState()->createNewLevel();
-	if (!level) throw RpcError("internal", "GameLevelManager::createNewLevel failed");
-	level->m_levelName = name;
-	if (auto song = optNumber(params, "song_id"); song && *song > 0) level->m_songID = (int)*song;
-	if (auto track = optNumber(params, "audio_track")) level->m_audioTrack = (int)*track;
-	LocalLevelManager::sharedState()->save();
-	openInEditor(level);
-	return matjson::makeObject({{"created", levelSummary(level)}, {"opening_editor", true}});
+		auto level = GameLevelManager::sharedState()->createNewLevel();
+		if (!level) throw RpcError("internal", "GameLevelManager::createNewLevel failed");
+		level->m_levelName = name;
+		if (auto song = optNumber(p, "song_id"); song && *song > 0) level->m_songID = (int)*song;
+		if (auto track = optNumber(p, "audio_track")) level->m_audioTrack = (int)*track;
+		LocalLevelManager::sharedState()->save();
+		level->retain();
+		*holder = level;
+		return matjson::makeObject({{"created", levelSummary(level)}});
+	}, params);
+	switchTo(*holder);
+	info["in_editor"] = true;
+	return info;
 }
 
 // params: name (exact), confirm_name? (required for levels not named "CLAUDE ...")
-BRIDGE_COMMAND(open_level) {
-	auto name = paramString(params, "name");
-	auto level = findLevel(name);
-	if (!level) throw RpcError("not_found", fmt::format("no local level named '{}' (see list_levels)", name));
-	if (!isSafeName(name) && optString(params, "confirm_name") != name)
-		throw RpcError("level_protected", fmt::format("'{}' is not a CLAUDE level; pass confirm_name=\"{}\" to open it", name, name));
-	if (auto lel = LevelEditorLayer::get(); lel && lel->m_level == level)
-		return matjson::makeObject({{"opened", levelSummary(level)}, {"already_open", true}});
-	prepareToLeave();
-	openInEditor(level);
-	return matjson::makeObject({{"opened", levelSummary(level)}, {"opening_editor", true}});
+// Off-thread: returns once the level is open in the editor.
+BRIDGE_COMMAND_OFF_THREAD(open_level) {
+	auto holder = std::make_shared<GJGameLevel*>(nullptr);
+	auto info = runOnMainThread([holder](matjson::Value const& p) {
+		auto name = paramString(p, "name");
+		auto level = findLevel(name);
+		if (!level) throw RpcError("not_found", fmt::format("no local level named '{}' (see list_levels)", name));
+		if (!isSafeName(name) && optString(p, "confirm_name") != name)
+			throw RpcError("level_protected",
+				fmt::format("'{}' is not a CLAUDE level; pass confirm_name=\"{}\" to open it", name, name));
+		if (auto lel = LevelEditorLayer::get(); lel && lel->m_level == level)
+			return matjson::makeObject({{"opened", levelSummary(level)}, {"already_open", true}});
+		prepareToLeave();
+		level->retain();
+		*holder = level;
+		return matjson::makeObject({{"opened", levelSummary(level)}});
+	}, params);
+	if (*holder) switchTo(*holder);
+	info["in_editor"] = true;
+	return info;
 }
 
 // params: claude_only? (default false), limit? (default 200)

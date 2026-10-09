@@ -197,7 +197,7 @@ std::vector<int> createFromStrings(LevelEditorLayer* lel, std::vector<std::strin
 		joined += s;
 		joined += ';';
 	}
-	auto created = lel->createObjectsFromString(joined, false, true);
+	auto created = lel->createObjectsFromString(joined, true, true);
 	std::vector<int> uids;
 	if (created)
 		for (auto obj : CCArrayExt<GameObject*>(created)) uids.push_back(obj->m_uniqueID);
@@ -238,7 +238,7 @@ BRIDGE_COMMAND(remove_objects) {
 		if (sel.matches(obj)) victims.push_back(obj);
 	auto backup = backupLevel(lel, "remove_objects");
 	if (auto ui = lel->m_editorUI) ui->deselectAll();
-	for (auto obj : victims) lel->removeObject(obj, false);
+	for (auto obj : victims) lel->removeObject(obj, true);
 	return matjson::makeObject({
 		{"removed", (int)victims.size()},
 		{"backup", utils::string::pathToString(backup)},
@@ -284,7 +284,7 @@ BRIDGE_COMMAND(modify_objects) {
 		}
 		rebuilt.push_back(joinObject(props));
 	}
-	for (auto obj : targets) lel->removeObject(obj, false);
+	for (auto obj : targets) lel->removeObject(obj, true);
 	auto uids = rebuilt.empty() ? std::vector<int>{} : createFromStrings(lel, rebuilt);
 	return matjson::makeObject({
 		{"modified", (int)uids.size()},

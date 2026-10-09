@@ -30,7 +30,7 @@ y 15 is node y 105 — and the mod converts both ways; measured live 2026-10-09.
 |---|---|---|
 | `status` | GD/mod reachable? scene, editor open, playtest state, level name/ID/song/object count, versions. **Call first.** Returns `running: false` instead of failing when GD is closed. | `{}` |
 | `list_levels` | Local levels (name, song, `claude` flag). | `{"claude_only": true}` |
-| `create_level` | New level, always prefixed `"CLAUDE "`, opened in the editor. Poll `status` until `in_editor`. | `{"name": "thermal lock s2", "song_id": 1502369}` |
+| `create_level` | New level, always prefixed `"CLAUDE "`; returns once it is open in the editor. | `{"name": "thermal lock s2", "song_id": 1502369}` |
 | `open_level` | Open by exact name; non-CLAUDE levels need `confirm_name`. | `{"name": "CLAUDE thermal lock s2"}` |
 | `save_level` | Save the open level to GD's list and to disk. | `{}` |
 | `get_level_string` | Raw level string `header;obj;obj;...` + name + object count. | `{}` |
@@ -45,7 +45,7 @@ y 15 is node y 105 — and the mod converts both ways; measured live 2026-10-09.
 | `playtest` | `start` / `stop` / `pause` / `resume` / `status`; `from_x` starts from an x (temporary start pos). | `{"action": "start", "from_x": 1500}` |
 | `capture_frames` | During a playtest: N frames every interval_ms, returned as images in order. | `{"count": 6, "interval_ms": 500}` |
 | `get_music` | Song ID / official track, offset, fade in/out, guidelines (time + colour). | `{}` |
-| `undo` / `redo` | GD's own undo/redo of one editor action. | `{}` |
+| `undo` / `redo` | GD's own undo/redo of one editor action — for hand edits only; tool edits stay out of GD's history (revert them with `restore_backup`). | `{}` |
 | `list_backups` | Backups of a level, newest first. | `{"level": "CLAUDE test"}` |
 | `restore_backup` | Replace the open level with a backup (current state backed up first). | `{"file": "20261009T040557123Z_add_objects.txt"}` |
 
@@ -71,8 +71,15 @@ from a gdlib build) -> `screenshot` to check the layout -> `playtest start` + `c
   not exercise (undo/redo, restore_backup, modify_objects, playtest from_x, get_music) are mock-tested
   only so far.
 - Windows only (the mod uses Winsock; CI builds Win64 only).
-- `set_level_string` and `restore_backup` reload the editor: GD's undo history is lost (backups cover it).
-- `modify_objects` re-creates objects, so uids change and GD's undo sees a remove + add.
+- **Tool edits are not in GD's undo history** (measured live: GD recorded the delete half of a
+  modify but not the re-create, so undo produced a duplicate). The tools write with noUndo; revert
+  them with `list_backups` + `restore_backup`. `undo`/`redo` are for hand edits.
+- **Switching or reloading the editor is staged** (crash found live 2026-10-09: building a new
+  LevelEditorLayer while the old one still ran -> access violation in GameObject::shouldBlendColor).
+  `set_level_string`, `restore_backup`, `create_level`, `open_level` leave through GD's own exit
+  (EditorPauseLayer::onExitEditor), wait until the old editor is gone, then open the level and wait
+  until it is up (a few seconds; client timeout 60 s). The reload clears GD's undo history.
+- `modify_objects` re-creates objects, so uids change.
 - `playtest from_x` uses a temporary start position with default settings (cube, 1x, normal
   gravity): starting inside a ship/2x section plays it as cube 1x. It is removed when the playtest
   stops (also via GD's own stop button).
@@ -81,7 +88,6 @@ from a gdlib build) -> `screenshot` to check the layout -> `playtest start` + `c
   `...\distanax.gd-bridge\captures\` and are deleted after 3 days (on the next GD launch).
 - Friendly property names cover common keys and the move trigger only; other trigger settings need
   raw gddocs keys, which are still unverified in-game (see Rules below).
-- `create_level` switches scenes asynchronously: the reply comes before the editor is up; poll `status`.
 - One request at a time; commands run on GD's main thread with a 10 s deadline (`timeout` error if GD
   is frozen or loading).
 

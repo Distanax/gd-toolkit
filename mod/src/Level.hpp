@@ -29,9 +29,24 @@ void requireWritable(LevelEditorLayer* lel, matjson::Value const& params);
 // a write must never proceed without its backup.
 std::filesystem::path backupLevel(LevelEditorLayer* lel, std::string const& reason);
 
-// Replaces the level's whole content and reloads the editor so GD re-parses header + objects.
-// Caller has already checked the guard and taken the backup.
-void replaceLevelString(LevelEditorLayer* lel, std::string const& levelString);
+// ---- switching the editor (SOCKET THREAD ONLY: these block while GD renders frames) ----
+// Building a new LevelEditorLayer while the old one is still running crashes GD (live 2026-10-09:
+// EXCEPTION_ACCESS_VIOLATION in GameObject::shouldBlendColor from the old layer's updateVisibility).
+// So the editor is always left through GD's own exit (EditorPauseLayer::onExitEditor, no save) and the
+// next one is only built once the old one is gone and no scene transition is running.
+
+// Leaves the editor if one is open and waits until it is gone. Throws RpcError("timeout").
+void leaveEditorBlocking();
+// Opens `level` in the editor (call when no editor is open) and waits until it is up. Throws on timeout.
+void openEditorBlocking(GJGameLevel* level);
+// leave + set m_levelString (compressed) + open: the full reload used by set_level_string/restore_backup.
+void reloadEditorWith(GJGameLevel* level, std::string const& levelString);
+
+// Socket thread. Replaces the open level's content: on the main thread checks editor / no playtest / the
+// CLAUDE guard, asks `contentFor` for the new level string (may throw), backs up with `reason`; then
+// reloads the editor. Returns {"name", "backup", "reloaded": true}.
+matjson::Value reloadOpenLevel(matjson::Value const& params, std::string const& reason,
+	std::function<std::string(LevelEditorLayer*)> contentFor);
 
 // Saves the open editor level into GD's level list (EditorPauseLayer::saveLevel) and writes
 // CCLocalLevels.dat to disk.

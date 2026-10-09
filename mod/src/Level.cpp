@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <chrono>
+#include <functional>
+#include <thread>
 #include <vector>
 
 #include <Geode/utils/file.hpp>
@@ -37,10 +39,102 @@ void requireWritable(LevelEditorLayer* lel, matjson::Value const& params) {
 			SAFE_PREFIX, name));
 }
 
-void replaceLevelString(LevelEditorLayer* lel, std::string const& levelString) {
-	auto level = lel->m_level;
-	level->m_levelString = ZipUtils::compressString(levelString, false, 0);
-	CCDirector::sharedDirector()->replaceScene(LevelEditorLayer::scene(level, false));
+namespace {
+
+bool sceneSettled() {
+	auto scene = CCDirector::sharedDirector()->getRunningScene();
+	return scene && !typeinfo_cast<CCTransitionScene*>(scene);
+}
+
+// Polls `cond` on the main thread every 100 ms until true. Socket thread only.
+bool waitForMain(std::function<bool()> cond, int timeoutMs) {
+	auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(timeoutMs);
+	while (std::chrono::steady_clock::now() < deadline) {
+		auto ok = runOnMainThread([cond](matjson::Value const&) { return matjson::Value(cond()); },
+			matjson::Value::object());
+		if (ok.asBool().unwrapOr(false)) return true;
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
+	return false;
+}
+
+}  // namespace
+
+void leaveEditorBlocking() {
+	auto had = runOnMainThread([](matjson::Value const&) {
+		auto lel = LevelEditorLayer::get();
+		if (!lel) return matjson::Value(false);
+		requireNotPlaytesting(lel);
+		auto pause = EditorPauseLayer::create(lel);
+		if (!pause) throw RpcError("internal", "could not create EditorPauseLayer to exit the editor");
+		pause->onExitEditor(nullptr);  // GD's own exit (no save): cleans up and goes to the level page
+		return matjson::Value(true);
+	}, matjson::Value::object());
+	if (!had.asBool().unwrapOr(false)) return;
+	if (!waitForMain([] { return LevelEditorLayer::get() == nullptr && sceneSettled(); }, 10000))
+		throw RpcError("timeout", "the editor did not close within 10 s");
+	std::this_thread::sleep_for(std::chrono::milliseconds(150));  // let the old layer finish tearing down
+}
+
+void openEditorBlocking(GJGameLevel* level) {
+	runOnMainThread([level](matjson::Value const&) {
+		if (LevelEditorLayer::get()) throw RpcError("busy", "an editor is still open");
+		CCDirector::sharedDirector()->replaceScene(
+			CCTransitionFade::create(0.3f, LevelEditorLayer::scene(level, false)));
+		return matjson::Value(true);
+	}, matjson::Value::object());
+	if (!waitForMain([level] {
+			auto lel = LevelEditorLayer::get();
+			return lel && lel->m_level == level && lel->m_editorUI && sceneSettled();
+		}, 15000))
+		throw RpcError("timeout", "the editor did not open within 15 s");
+}
+
+void reloadEditorWith(GJGameLevel* level, std::string const& levelString) {
+	leaveEditorBlocking();
+	runOnMainThread([level, levelString](matjson::Value const&) {
+		level->m_levelString = ZipUtils::compressString(levelString, false, 0);
+		return matjson::Value(true);
+	}, matjson::Value::object());
+	openEditorBlocking(level);
+}
+
+matjson::Value reloadOpenLevel(matjson::Value const& params, std::string const& reason,
+	std::function<std::string(LevelEditorLayer*)> contentFor) {
+	struct Prepared {
+		GJGameLevel* level = nullptr;
+		std::string content;
+	};
+	auto prep = std::make_shared<Prepared>();  // shared: the main-thread step may outlive a timeout
+	auto info = runOnMainThread([prep, reason, contentFor](matjson::Value const& p) {
+		auto lel = requireEditor();
+		requireNotPlaytesting(lel);
+		requireWritable(lel, p);
+		prep->content = contentFor(lel);
+		auto backup = backupLevel(lel, reason);
+		prep->level = lel->m_level;
+		prep->level->retain();  // keep it alive across the editor teardown
+		return matjson::makeObject({
+			{"name", levelName(lel)},
+			{"backup", utils::string::pathToString(backup)},
+		});
+	}, params);
+	auto release = [prep] {
+		if (prep->level)
+			runOnMainThread([prep](matjson::Value const&) {
+				prep->level->release();
+				return matjson::Value(true);
+			}, matjson::Value::object());
+	};
+	try {
+		reloadEditorWith(prep->level, prep->content);
+	} catch (...) {
+		release();
+		throw;
+	}
+	release();
+	info["reloaded"] = true;
+	return info;
 }
 
 void saveEditorLevel(LevelEditorLayer* lel) {

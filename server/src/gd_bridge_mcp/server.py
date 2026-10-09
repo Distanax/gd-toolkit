@@ -183,7 +183,7 @@ def build_server(client: BridgeClient | None = None) -> MCPServer:
         """Create a new local level and open it in the editor. The name always gets the "CLAUDE " prefix.
         song_id = Newgrounds/custom song ID, audio_track = official song index. Refused while you're
         editing one of your own (non-CLAUDE) levels, so unsaved work is never discarded; a CLAUDE level
-        that is open gets backed up and saved first. Call status after a second to confirm the editor."""
+        that is open gets backed up and saved first. Returns once the new level is open in the editor."""
         return call("create_level", name=name, song_id=song_id, audio_track=audio_track)
 
     @mcp.tool()
@@ -206,13 +206,14 @@ def build_server(client: BridgeClient | None = None) -> MCPServer:
     # ---- undo / redo / backups ---------------------------------------------------------------
     @mcp.tool()
     def undo(confirm_name: str | None = None) -> dict[str, Any]:
-        """Undo the last editor action (GD's own undo). Note set_level_string/restore_backup reload the
-        editor and clear the undo history; use restore_backup for those."""
+        """Undo the last editor action in GD's own undo history: that covers edits made by hand in GD,
+        NOT edits made through these tools (they stay out of GD's history). To revert a tool edit use
+        list_backups + restore_backup; every write tool makes a backup first."""
         return call("undo", confirm_name=confirm_name)
 
     @mcp.tool()
     def redo(confirm_name: str | None = None) -> dict[str, Any]:
-        """Redo the last undone editor action."""
+        """Redo the last undone editor action (GD's own history; see undo)."""
         return call("redo", confirm_name=confirm_name)
 
     @mcp.tool()

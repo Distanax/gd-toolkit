@@ -21,19 +21,10 @@ BRIDGE_COMMAND(get_level_string) {
 
 // Replaces the whole open level (header + objects) and reloads the editor so GD re-parses everything,
 // including colours and level settings. Backs up first; undo history does not survive the reload.
-BRIDGE_COMMAND(set_level_string) {
-	auto lel = requireEditor();
-	requireNotPlaytesting(lel);
-	requireWritable(lel, params);
+// Off-thread: the reload leaves the editor and reopens it, waiting for GD between the steps.
+BRIDGE_COMMAND_OFF_THREAD(set_level_string) {
 	auto str = paramString(params, "level_string");
 	if (str.find(';') == std::string::npos)
 		throw RpcError("invalid_params", "level_string must be a raw level string (header;objects;...)");
-
-	auto backup = backupLevel(lel, "set_level_string");
-	replaceLevelString(lel, str);
-	return matjson::makeObject({
-		{"name", levelName(lel)},
-		{"backup", utils::string::pathToString(backup)},
-		{"reloaded", true},
-	});
+	return reloadOpenLevel(params, "set_level_string", [str](LevelEditorLayer*) { return str; });
 }

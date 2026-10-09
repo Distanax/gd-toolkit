@@ -85,22 +85,16 @@ BRIDGE_COMMAND(list_backups) {
 }
 
 // params: file (a name from list_backups), level? (backup folder; defaults to the open level), confirm_name?
-// Restoring is itself a write: the current state is backed up first.
-BRIDGE_COMMAND(restore_backup) {
-	auto lel = requireEditor();
-	requireNotPlaytesting(lel);
-	requireWritable(lel, params);
+// Restoring is itself a write: the current state is backed up first. Off-thread (reloads the editor).
+BRIDGE_COMMAND_OFF_THREAD(restore_backup) {
 	auto fileName = paramString(params, "file");
 	if (fileName.find_first_of("/\\") != std::string::npos || fileName.find("..") != std::string::npos)
 		throw RpcError("invalid_params", "file must be a bare backup file name from list_backups");
-	auto path = backupDirFor(lel, params) / fileName;
-	auto content = file::readString(path);
-	if (!content) throw RpcError("not_found", fmt::format("no backup '{}'", fileName));
-	auto backup = backupLevel(lel, "before_restore");
-	replaceLevelString(lel, content.unwrap());
-	return matjson::makeObject({
-		{"restored", fileName},
-		{"backup", utils::string::pathToString(backup)},
-		{"reloaded", true},
+	auto info = reloadOpenLevel(params, "before_restore", [params, fileName](LevelEditorLayer* lel) {
+		auto content = file::readString(backupDirFor(lel, params) / fileName);
+		if (!content) throw RpcError("not_found", fmt::format("no backup '{}'", fileName));
+		return content.unwrap();
 	});
+	info["restored"] = fileName;
+	return info;
 }
