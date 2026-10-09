@@ -32,10 +32,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Mission started. Read the five priority-1 guides (planning-a-level, making-a-draft,
   playtesting, asking-for-feedback, the-rating-system), RobTop's GDRating.pdf (text extracted from the
   PDF, 13 pages) and the level FAQ. Wrote TASKS.md (146 tasks, M0-M12).
+- 2026-10-09: Task 2 done: Routine "gd-mastery continue" created: id trig_01F3vG1LgUpVQyQoGauYaWWP (https://claude.ai/code/routines/trig_01F3vG1LgUpVQyQoGauYaWWP), cron `43 */3 * * *` UTC, Sonnet 5.5, Default environment, tools Bash/Read/Write/Edit/Glob/Grep/WebFetch/WebSearch. Cloud runs do [offline] tasks only (no bridge access). Delete it in task 146 (claude.ai/code/routines; the API cannot delete).
 
 ## Next
-- Task 2: create the "gd-mastery continue" routine. Then tasks 3-10 (sources index, priority-1 notes,
-  checklist v0).
+- Tasks 3-10: sources index, priority-1 notes, checklist v0.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's
