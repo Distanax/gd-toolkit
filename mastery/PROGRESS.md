@@ -36,9 +36,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 3 done: mastery/SOURCES.md: all 163 GD Creator School guides from the site navigation with status (read/planned/optional), RobTop rating doc + FAQ, gddocs, gdp, OpenGD, SPWN, Geode bindings.
 - 2026-10-09: Task 4 done: notes/robtop-rating.md: stated factors (30 s min / Long 60 s+, clear gameplay, decent visuals, performance can block or lower a rate, Upload Guidelines, feedback), sending, Featured-tab placement (recency, playability, optimization per FAQ), explicit list of what is NOT stated, mapping to our tools. Also fixed the guide count in task 3 (163).
 - 2026-10-09: Task 5 done: notes/planning-a-level.md (komatic5): main/secondary ideas, plan fields, reserved resources, scope triangle, MoSCoW, detours; mapped to PLAN.md (task 115) and resource constants in the trigger/deco libraries.
+- 2026-10-09: Task 6 done: notes/making-a-draft.md (komatic5, sparktwee): MVP draft, placeholders, execution test, Occam, scientific method for unknown tasks, failing well; mapped to layout-before-deco ordering and drill logs.
 
 ## Next
-- Task 6: notes/making-a-draft.md.
+- Task 7: notes/playtesting.md.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's
