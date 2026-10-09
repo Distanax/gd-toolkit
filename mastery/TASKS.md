@@ -22,7 +22,7 @@ Notes go to `mastery/notes/<guide>.md` (one file per guide, cited). Lessons go t
 
 ## M2 — Basic gameplay notes (priority 2)
 - [x] 11. [offline] notes: using-gamemodes, gameplay-objects
-- [ ] 12. [offline] notes: creating-gameplay, making-sync
+- [x] 12. [offline] notes: creating-gameplay, making-sync
 - [ ] 13. [offline] notes: making-consistent-gameplay
 - [ ] 14. [offline] notes: making-fast-gameplay, making-slow-gameplay
 - [ ] 15. [offline] notes: making-structures, making-duals

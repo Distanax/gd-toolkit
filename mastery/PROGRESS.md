@@ -42,9 +42,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 9 done: notes/the-rating-system.md (sparktwee, NotAModerator): roles, lifecycle, tiers, request servers/streams/DMs, known vs unknown (criteria subjective, no checklist), how to improve chances; mapped to the feedback package (venues verified with dates).
 - 2026-10-09: Task 10 done: mastery/CHECKLIST.md v0: 12 categories (length/scope, clarity, sync, consistency, fairness, pacing/speed, structure, deco, effects, polish, performance/LDM, presentation), scoring anchors (no evidence = 0, 7 = all criteria evidenced, 9-10 needs corpus comparison + tester feedback). Rules from the mission brief are marked "(pending: task N)" until their guide is read and cited.
 - 2026-10-09: Task 11 done: notes/using-gamemodes.md (illusion2, komatic5) + notes/gameplay-objects.md (sparktwee, xplode09): per-mode fit/pitfalls table (no mode switch for 1-2 inputs, orb chains inconsistent, idle ship, wave chokepoints, swing not on ship gameplay, robot hold = note strength), orb strengths, portals, letter blocks D/J/S/H/F; derived linter checks and sim/object-ID follow-ups.
+- 2026-10-09: Task 12 done: notes/creating-gameplay.md (mesoionosphere, ChuckOlate): vision, sectioning, hybrid build method, setup groups, motifs with variation, movement flow + clean portal entry, four speed-change kinds + easing. notes/making-sync.md (e.clypse, NotAModerator): pick one layer, tools, speed-portal placement, sync playtesting. GAP: beat-strength order, holds, mode changes on strong beats are NOT in making-sync; CHECKLIST updated (motifs now cited; the rest pending task 21).
 
 ## Next
-- Task 12: notes creating-gameplay + making-sync.
+- Task 13: notes making-consistent-gameplay.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's

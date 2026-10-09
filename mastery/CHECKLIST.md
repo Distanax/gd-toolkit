@@ -24,10 +24,11 @@ comparison against corpus levels of the target tier (numbers cited) and positive
 
 ## 3. Sync
 - [ ] Inputs map to chosen song layers; strong notes -> big movements, weak -> small; holds on
-  sustains (pending: task 12 making-sync, 21 pacing-4). Evidence: sync checker report.
-- [ ] Mode/speed changes on strong beats (4/4 strength 1,3,2,4) (pending: task 12).
+  sustains (layer choice: notes/making-sync.md; strong/weak notes + holds pending: task 21 pacing-4 —
+  making-sync does not state them). Evidence: sync checker report.
+- [ ] Mode/speed changes on strong beats (4/4 strength 1,3,2,4) (pending: task 21 — not in making-sync).
   Evidence: sync checker portal report.
-- [ ] Motifs repeat with the music, slight variation (pending: task 12/21). Evidence: section spec vs layout.
+- [ ] Motifs repeat with the music, slight variation (notes/creating-gameplay.md). Evidence: section spec vs layout.
 
 ## 4. Consistency
 - [ ] No orb chains; portals before orbs; slope transitions with 1-block gaps; H-blocks after high
