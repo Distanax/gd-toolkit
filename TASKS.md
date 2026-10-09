@@ -55,7 +55,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 36. MCP tools `move_camera`, `screenshot` (returns an MCP image)
 
 ## M7 — Playtest + frame capture
-- [ ] 37. Research: editor playtest API (onPlaytest/onStopPlaytest, start from x / start pos)
+- [x] 37. Research: editor playtest API (onPlaytest/onStopPlaytest, start from x / start pos)
 - [ ] 38. Mod: `playtest(start|stop, from_x?)`
 - [ ] 39. Mod: `capture_frames(n, interval)` during playtest (async job, poll for results)
 - [ ] 40. MCP tools `playtest`, `capture_frames` (returns images)

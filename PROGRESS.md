@@ -81,9 +81,10 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 34 done: get_camera / move_camera(x?, y?, zoom?) in commands/View.cpp (Capture.cpp getCamera/setCamera). Committed with 35.
 - 2026-10-09: Task 35 done: screenshot(x?, y?, zoom? | region?, hide_ui=true, restore_camera=true): aims the editor camera (not during playtest), hides EditorUI for the shot, captures to <save dir>/captures/shot_<UTC>_<n>.png, restores camera; works outside the editor as a plain screen capture. Returns {path, width, height, camera}.
 - 2026-10-09: Task 36 done: MCP move_camera (no args = read) and screenshot -> [ImageContent PNG, JSON metadata] (tool registered with structured_output=False: an Image cannot be structured output). Reads the PNG the mod wrote (same machine), downscales to max_width (default 1280) with Pillow (new dependency). Mock writes real PNGs; 25 tests pass.
+- 2026-10-09: Task 37 done: M6 green (ce9c411, both workflows). Playtest research: EditorUI::onPlaytest/onStopPlaytest(sender) (win addresses), LevelEditorLayer::onPausePlaytest/onResumePlaytest (inline), m_playbackMode. Start point: LevelEditorLayer::findStartPosObject picks the enabled start pos (ID 31) with the highest m_startSettings->m_targetOrder, then rightmost -> from_x = temporary StartPosObject with targetOrder 1e6. LevelEditorLayer::onStopPlaytest has a win address, so it can be hooked to clean up.
 
 ## Next
-- Wait for CI (mod M6 + Python); then M7 playtest + frames (research done, see 37 notes next).
+- Tasks 38-40.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
