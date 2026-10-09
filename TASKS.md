@@ -32,7 +32,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 19. README: one-command pip install + Claude desktop config snippet (acceptance 3)
 
 ## M4 — Level string read/write + safety
-- [ ] 20. Research: LevelEditorLayer / GJGameLevel bindings for 2.2081 (getLevelString, createObjectsFromString, removeAllObjects)
+- [x] 20. Research: LevelEditorLayer / GJGameLevel bindings for 2.2081 (getLevelString, createObjectsFromString, removeAllObjects)
 - [ ] 21. Mod: `get_level_string`
 - [ ] 22. Mod: backup store (`<save dir>/backups/<level>/<timestamp>.txt`, rotation) used by every write command
 - [ ] 23. Mod: safety guard — writes only if level name starts with "CLAUDE " or `confirm_name` matches exactly
