@@ -1,0 +1,14 @@
+{
+	"geode": "5.10.1",
+	"gd": {
+		"win": "2.2081"
+	},
+	"id": "distanax.gd-bridge",
+	"name": "GD Bridge",
+	"version": "v0.1.0",
+	"developer": "Distanax",
+	"description": "Local-only bridge that lets an MCP server control the level editor.",
+	"links": {
+		"source": "https://github.com/Distanax/gd-toolkit"
+	}
+}

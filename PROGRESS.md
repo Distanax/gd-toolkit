@@ -36,8 +36,11 @@ up the level string first; never upload levels online.
 
 - 2026-10-08: Task 3 done (Geode v5 layout research, notes under Environment facts).
 
+- 2026-10-08: Task 4 done: mod/ skeleton (mod.json pins geode 5.10.1 / gd win 2.2081, CMake from
+  example-mod, main.cpp logs on load). Not built yet; CI comes in task 5.
+
 ## Next
-- Task 4: mod/ skeleton.
+- Task 5: GitHub Actions build, get it green.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
@@ -49,7 +52,8 @@ up the level string first; never upload levels online.
 - **Distanax's install, read from the Geode log 2026-10-08:** "Running Geode v5.10.1 in Geometry Dash
   v2.2081 on Windows". GD lives in `C:\Program Files (x86)\Steam\steamapps\common\Geometry Dash`;
   installed mods go in `<GD>\geode\mods\`, logs in `<GD>\geode\logs\`.
-- **Per-mod save dir** = `dirs::getModsSaveDir() / <mod id>` = `%LOCALAPPDATA%\GeometryDash\geode\mods  distanax.gd-bridge\` (Mod.cpp `m_saveDirPath`, Dirs.cpp, windows/util.cpp `dirs::getSaveDir` uses
+- **Per-mod save dir** = `dirs::getModsSaveDir() / <mod id>` = `%LOCALAPPDATA%\GeometryDash\geode\mods\distanax.gd-bridge\`
+  (Mod.cpp `m_saveDirPath`, Dirs.cpp, windows/util.cpp `dirs::getSaveDir` uses
   LOCAL_APPDATA + exe name). Verified the folder layout exists on the PC.
 - **mod.json (docs.geode-sdk.org/mods/configuring):** required `geode`, `gd`, `id`, `name`, `version`,
   `developer`/`developers`. id: lowercase a-z, `.`, `_`, `-`. v5 reworked dependencies (`importance`
@@ -74,6 +78,8 @@ up the level string first; never upload levels online.
 - **Backups are written by the mod** before every write, so they happen whatever the caller is.
 - **Python MCP server uses the official `mcp` SDK (FastMCP, stdio)**, installed via
   `pip install "git+https://github.com/Distanax/gd-toolkit#subdirectory=server"`.
+- **SDK pin lives in mod.json** (`"geode": "5.10.1"`): build-geode-mod's `sdk` input defaults to
+  `given`, i.e. the version in mod.json, so CI and the mod can't disagree.
 - **A mock bridge** lets the Python side be built and tested without GD running.
 
 ## Open questions
