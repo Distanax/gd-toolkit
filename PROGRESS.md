@@ -53,8 +53,10 @@ up the level string first; never upload levels online.
   load checks: Geode mod list, `/health` in a browser, bridge.json). The `/health` check needs task 11's
   build. Task 8 is blocked on Distanax.
 
+- 2026-10-09: Task 9 done: threading, matjson, file, settings, bindings and MCP v2 notes recorded below.
+
 ## Next
-- Task 9: research Geode v5 threading / matjson / save dir (mostly done while waiting on CI, see notes).
+- Task 10: commit docs/PROTOCOL.md (drafted). Then task 11 (listener).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
@@ -76,6 +78,34 @@ up the level string first; never upload levels online.
   (loader/Loader.hpp), `Mod::get()->getSaveDir()` / `getSettingValue<T>(key)` (loader/Mod.hpp),
   `geode::async` (utils/async.hpp, in the prelude, `async::waitForMainThread`). C++23 required.
   `Mod::isEnabled` was renamed `isLoaded`; `geode::cast::as`, `CCARRAY_FOREACH` removed (use `CCArrayExt`).
+- **Threading (task 9):** `queueInMainThread(ScheduledFunction&&)` with
+  `ScheduledFunction = geode::Function<void()>` (Loader.hpp/Types.hpp). The dispatcher passes a lambda
+  owning a `shared_ptr<std::promise>` and waits on the future with a timeout.
+- **JSON:** Geode v5.10.1 pulls `geode-sdk/json@3.3.1` (matjson): `matjson::parse(sv)` ->
+  `Result<Value, ParseError>`, `.dump(indent)`, `makeObject({{k,v}})`, `Value::array()`/`object()`,
+  `push`, `contains`, `operator[]`, `isNull/isBool/isNumber/isString/isArray/isObject`,
+  `asBool/asInt/asDouble/asString/asArray` -> `Result`.
+- **Files:** `utils/file.hpp` `writeStringSafe` (atomic via temp file), `readString`,
+  `createDirectoryAll`. `utils::string::pathToString` for UTF-8-safe paths. Logging `log::info/warn/error`.
+- **Windows headers:** Geode's platform/windows.hpp includes `<Windows.h>` without
+  `WIN32_LEAN_AND_MEAN`, so socket code includes `<winsock2.h>` first. Geode's CMake already links
+  `ws2_32` into every mod (`target_link_libraries(... INTERFACE delayimp ws2_32)`).
+- **Settings:** int setting `{type, name, description, default, min, max, requires-restart, control}`;
+  read with `getSettingValue<int64_t>`.
+- **Bindings 2.2081 (geode-sdk/bindings main, GeometryDash.bro)** — Windows-available (address or
+  inline): `LevelEditorLayer::get()`, `getLevelString()`, `createObjectsFromString(str, noUndo, noLimit)`,
+  `createObject(id, pos, noUndo)`, `removeObject(obj, noUndo)`, `removeAllObjects()`,
+  `objectsInRect(rect, ignoreGroups)`, `onPlaytest()`, `onStopPlaytest()`, `undoLastAction()`,
+  `redoLastAction()`, `m_editorUI`; `EditorUI::get()`, `updateZoom(float)`,
+  `constrainGameLayerPosition(x,y)`, `selectObjects`, `getSelectedObjects`, `moveObject`,
+  `onPlaytest/onStopPlaytest(sender)`; `GameManager::sharedState()->m_playLayer /
+  m_levelEditorLayer`; `GJGameLevel::m_levelName/m_levelID (SeedValueRSV, .value())/m_songID/
+  m_audioTrack/m_levelString/m_levelType (GJLevelType::Editor = 2)`; `GJBaseGameLayer::m_level,
+  m_playbackMode (PlaybackMode::Not/Playing/Paused), m_objects`; `LevelEditorLayer::m_objectCount`.
+- **MCP Python SDK is v2 (2.3.0, Python >= 3.10)** — v1's `FastMCP` is gone:
+  `from mcp.server.mcpserver import MCPServer, Context, Image`, `mcp.run(transport="stdio")`,
+  tool failures raise `ToolError` (`mcp.server.mcpserver.exceptions`), sync tools run on a worker
+  thread, `Client` in `mcp` for tests. `MCP_*` env vars are no longer read. (py.sdk.modelcontextprotocol.io/migration)
 - Other editor mods installed on the PC: hjfod.betteredit, hjfod.gdshare, hjfod.gmd-api,
   alphalaneous.editortab_api (possible conflicts to keep in mind; none expected).
 - No local C++ toolchain on the PC; all mod builds happen in CI. Python 3.14 is installed locally.
@@ -90,7 +120,7 @@ up the level string first; never upload levels online.
 - **Safety is enforced in the mod**, so no client (MCP or otherwise) can bypass it; the MCP server
   checks too for friendlier errors.
 - **Backups are written by the mod** before every write, so they happen whatever the caller is.
-- **Python MCP server uses the official `mcp` SDK (FastMCP, stdio)**, installed via
+- **Python MCP server uses the official `mcp` SDK v2 (`MCPServer`, stdio)**, installed via
   `pip install "git+https://github.com/Distanax/gd-toolkit#subdirectory=server"`.
 - **SDK pin lives in mod.json** (`"geode": "5.10.1"`): build-geode-mod's `sdk` input defaults to
   `given`, i.e. the version in mod.json, so CI and the mod can't disagree.

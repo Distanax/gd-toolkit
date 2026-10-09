@@ -17,7 +17,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [ ] 8. [blocked: Distanax] (TESTING.md section 1) Confirm the mod loads in GD (acceptance 2)
 
 ## M2 — Mod transport
-- [ ] 9. Research: Geode v5 threading (`queueInMainThread`), matjson API, save-dir path, logging; notes in PROGRESS.md
+- [x] 9. Research: Geode v5 threading (`queueInMainThread`), matjson API, save-dir path, logging; notes in PROGRESS.md
 - [ ] 10. Protocol spec in docs/PROTOCOL.md (HTTP/1.1 POST /rpc on 127.0.0.1, JSON-RPC-ish body, token header, error codes)
 - [ ] 11. Mod: Winsock listener thread on 127.0.0.1 (port from settings, fallback to ephemeral), minimal HTTP parser
 - [ ] 12. Mod: random token + port written to `<mod save dir>/bridge.json`; reject requests without it
