@@ -12,7 +12,7 @@ Notes go to `mastery/notes/<guide>.md` (one file per guide, cited). Lessons go t
 - [x] 3. [offline] mastery/SOURCES.md: every guide URL from the GDCS index with status, RobTop docs, gddocs, gdp, OpenGD, SPWN
 
 ## M1 — Ground truth + main skills (priority 1)
-- [ ] 4. [offline] notes/robtop-rating.md — GDRating.pdf + FAQ: what is stated, what is NOT (no tier criteria)
+- [x] 4. [offline] notes/robtop-rating.md — GDRating.pdf + FAQ: what is stated, what is NOT (no tier criteria)
 - [ ] 5. [offline] notes/planning-a-level.md
 - [ ] 6. [offline] notes/making-a-draft.md
 - [ ] 7. [offline] notes/playtesting.md
