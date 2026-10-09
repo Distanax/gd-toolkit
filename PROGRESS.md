@@ -97,8 +97,18 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 50 done: TESTING.md section 2: update mod + server, run `py tests\e2e_bridge.py` from the repo, what to expect in GD and the console, what to report. Task 51 marked blocked on Distanax.
 - 2026-10-09: Task 52 done: CLAUDE.md "gd-bridge tool reference": chain, safety rules, table of all 21 tools with example arguments (checked programmatically: every registered tool is documented), selectors, object names, friendly properties, typical loop, known limits (not yet verified in-game, Windows only, reload loses undo, uids change on modify, from_x start pos uses default cube 1x settings, capture costs/limits and captures not pruned, friendly keys cover move trigger only, async create_level, 10 s main-thread deadline). Roadmap item 1 updated. **Acceptance 5 met.** Version bump to 0.2.0 (mod + server) in the same push; it also re-triggers the mod build, because GitHub never started a run for the 5786b7a fix.
 
+- 2026-10-09: Captures older than 3 days are pruned on mod load (screenshots/frames are a few MB each;
+  backups are untouched). Removes the "captures not pruned" limit from CLAUDE.md.
+
 ## Next
-- Wait for the v0.2.0 mod build. Then only blocked tasks remain (2, 8, 51) plus 53 (needs 8 + 51).
+**Every task Claude can do alone is done. Remaining work is blocked on Distanax:**
+- Task 2: connect GitHub to claude.ai (TESTING.md section 0), then create the routine.
+- Task 8: install the mod and confirm it loads (TESTING.md section 1). Acceptance 2.
+- Task 51: run `py tests\e2e_bridge.py` and report (TESTING.md section 2). Acceptance 4.
+- Task 53 (tag v1.0.0, delete the routine) after 8 and 51 are confirmed.
+When Distanax reports results: fix whatever the live run exposes (expect a few in-game issues; nothing
+has run inside GD yet), push, ask for a re-run, then do task 53.
+Acceptance status: 1 met, 2 pending Distanax, 3 met, 4 script done + pending Distanax's run, 5 met.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).

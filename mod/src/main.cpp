@@ -1,3 +1,6 @@
+#include <chrono>
+#include <filesystem>
+
 #include <Geode/Geode.hpp>
 
 #include "Auth.hpp"
@@ -59,9 +62,24 @@ bridge::HttpResponse handle(bridge::HttpRequest const& req) {
 	return httpError(404, "not_found", "unknown path");
 }
 
+// Screenshots and playtest frames are only needed while Claude reads them; drop anything older than a few
+// days so the captures folder can't grow without bound. Backups are separate and never touched here.
+void pruneCaptures() {
+	auto dir = Mod::get()->getSaveDir() / "captures";
+	auto cutoff = std::filesystem::file_time_type::clock::now() - std::chrono::hours(24 * 3);
+	std::error_code ec;
+	int removed = 0;
+	for (auto const& entry : std::filesystem::directory_iterator(dir, ec)) {
+		auto when = entry.last_write_time(ec);
+		if (!ec && when < cutoff) removed += (int)std::filesystem::remove_all(entry.path(), ec);
+	}
+	if (removed) log::info("GD Bridge pruned {} old capture files", removed);
+}
+
 }  // namespace
 
 $on_mod(Loaded) {
+	pruneCaptures();
 	auto port = (uint16_t)Mod::get()->getSettingValue<int64_t>("port");
 	// Leaked on purpose: see HttpServer.hpp.
 	auto server = new bridge::HttpServer();

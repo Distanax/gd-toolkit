@@ -74,8 +74,8 @@ from a gdlib build) -> `screenshot` to check the layout -> `playtest start` + `c
   gravity): starting inside a ship/2x section plays it as cube 1x. It is removed when the playtest
   stops (also via GD's own stop button).
 - `capture_frames`: 1-120 frames, interval >= 16 ms, each frame costs one extra render (may dip FPS);
-  frames are window-sized PNGs, downscaled to `max_width` (640) for the reply. Screenshots and frames
-  accumulate in `...\distanax.gd-bridge\captures\` (not pruned yet).
+  frames are window-sized PNGs, downscaled to `max_width` (640) for the reply. Captures live in
+  `...\distanax.gd-bridge\captures\` and are deleted after 3 days (on the next GD launch).
 - Friendly property names cover common keys and the move trigger only; other trigger settings need
   raw gddocs keys, which are still unverified in-game (see Rules below).
 - `create_level` switches scenes asynchronously: the reply comes before the editor is up; poll `status`.
