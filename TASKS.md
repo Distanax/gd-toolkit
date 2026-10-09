@@ -37,7 +37,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 22. Mod: backup store (`<save dir>/backups/<level>/<timestamp>.txt`, rotation) used by every write command
 - [x] 23. Mod: safety guard — writes only if level name starts with "CLAUDE " or `confirm_name` matches exactly
 - [x] 24. Mod: `set_level_string` (backup -> clear -> load)
-- [ ] 25. MCP tools: `get_level_string`, `set_level_string` (+ tests on mock)
+- [x] 25. MCP tools: `get_level_string`, `set_level_string` (+ tests on mock)
 
 ## M5 — Objects
 - [ ] 26. Shared object model: dict of GD keys <-> object; reuse toolkit/gdlib key names in the server

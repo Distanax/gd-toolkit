@@ -15,6 +15,10 @@ from pathlib import Path
 from typing import Any, Callable
 
 from .client import PROTOCOL
+from .objects import TRIGGER_IDS, parse
+
+SAFE_PREFIX = "CLAUDE "
+DEFAULT_HEADER = "kS38,1_40_2_125_3_255_11_255_12_255_13_255_4_-1_6_1000_7_1_15_1_18_0_8_1|,kA2,0,kA4,0"
 
 
 class MockError(Exception):
@@ -41,11 +45,151 @@ class MockBridge:
             "level": {"name": "CLAUDE test", "id": 0, "song_id": 0, "objects": []},
             "playtest": "not",
         }
+        self.header = DEFAULT_HEADER
+        self.backups: list[tuple[str, str, str]] = []  # (level name, reason, level string)
+        self._next_uid = 1
         self.commands: dict[str, Command] = {
             "ping": lambda p: {"pong": True, "mod_version": "mock", "protocol": PROTOCOL},
             "status": self._status,
+            "get_level_string": self._get_level_string,
+            "set_level_string": self._set_level_string,
+            "add_objects": self._add_objects,
+            "remove_objects": self._remove_objects,
+            "modify_objects": self._modify_objects,
+            "list_objects": self._list_objects,
+            "get_triggers": self._get_triggers,
         }
         self._server: ThreadingHTTPServer | None = None
+
+    # -- level model (mirrors mod/src/Level.cpp + commands/*.cpp) -----------------
+    @property
+    def objects(self) -> list[dict[str, Any]]:
+        return self.state["level"]["objects"]
+
+    def _new_object(self, s: str) -> dict[str, Any]:
+        obj = {"uid": self._next_uid, "props": parse(s)}
+        self._next_uid += 1
+        return obj
+
+    def level_string(self) -> str:
+        return self.header + ";" + "".join(
+            ",".join(f"{k},{v}" for k, v in o["props"].items()) + ";" for o in self.objects)
+
+    def _require_editor(self) -> None:
+        if self.state["scene"] != "LevelEditorLayer":
+            raise MockError("not_in_editor", "open a level in the editor first")
+
+    def _require_write(self, p: dict[str, Any], reason: str) -> None:
+        self._require_editor()
+        if self.state["playtest"] != "not":
+            raise MockError("busy", "a playtest is running; stop it first")
+        name = self.state["level"]["name"]
+        if not name.startswith(SAFE_PREFIX) and p.get("confirm_name") != name:
+            raise MockError("level_protected", f"level '{name}' doesn't start with \"{SAFE_PREFIX}\"")
+        self.backups.append((name, reason, self.level_string()))
+
+    def _backup_path(self) -> str:
+        return f"mock-backups/{len(self.backups)}.txt"
+
+    def _select(self, p: dict[str, Any], for_write: bool) -> list[dict[str, Any]]:
+        sel = p.get("select") or {}
+        if for_write and not any(sel.get(k) for k in ("uids", "ids", "groups", "region", "triggers")) \
+                and not sel.get("all"):
+            raise MockError("invalid_params", "empty selector")
+        out = []
+        for o in self.objects:
+            pr = o["props"]
+            oid, x, y = int(pr["1"]), float(pr.get("2", 0)), float(pr.get("3", 0))
+            groups = {int(g) for g in pr.get("57", "").split(".") if g}
+            if sel.get("uids") and o["uid"] not in sel["uids"]:
+                continue
+            if sel.get("ids") and oid not in sel["ids"]:
+                continue
+            if sel.get("triggers") and oid not in TRIGGER_IDS.values():
+                continue
+            if sel.get("groups") and not groups & set(sel["groups"]):
+                continue
+            r = sel.get("region")
+            if r and not (min(r["x1"], r["x2"]) <= x <= max(r["x1"], r["x2"])
+                          and min(r["y1"], r["y2"]) <= y <= max(r["y1"], r["y2"])):
+                continue
+            out.append(o)
+        return out
+
+    def _describe(self, o: dict[str, Any], with_string: bool) -> dict[str, Any]:
+        pr = o["props"]
+        d = {"uid": o["uid"], "id": int(pr["1"]), "x": float(pr.get("2", 0)), "y": float(pr.get("3", 0)),
+             "rotation": float(pr.get("6", 0)), "scale_x": 1.0, "scale_y": 1.0,
+             "groups": [int(g) for g in pr.get("57", "").split(".") if g],
+             "trigger": int(pr["1"]) in TRIGGER_IDS.values(), "editor_layer": int(pr.get("20", 0))}
+        if with_string:
+            d["object_string"] = ",".join(f"{k},{v}" for k, v in pr.items())
+        return d
+
+    def _get_level_string(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_editor()
+        return {"name": self.state["level"]["name"], "object_count": len(self.objects),
+                "level_string": self.level_string()}
+
+    def _set_level_string(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_write(p, "set_level_string")
+        s = p.get("level_string")
+        if not isinstance(s, str) or ";" not in s:
+            raise MockError("invalid_params", "level_string must be a raw level string")
+        header, *objs = s.split(";")
+        self.header = header
+        self.objects[:] = [self._new_object(o) for o in objs if o.strip()]
+        return {"name": self.state["level"]["name"], "backup": self._backup_path(), "reloaded": True}
+
+    def _add_objects(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_write(p, "add_objects")
+        strings = p.get("objects")
+        if not isinstance(strings, list) or not strings:
+            raise MockError("invalid_params", "'objects' must be a non-empty list of object strings")
+        new = [self._new_object(s) for s in strings]
+        self.objects.extend(new)
+        return {"added": len(new), "uids": [o["uid"] for o in new], "backup": self._backup_path()}
+
+    def _remove_objects(self, p: dict[str, Any]) -> dict[str, Any]:
+        victims = self._select(p, True)
+        self._require_write(p, "remove_objects")
+        ids = {id(o) for o in victims}
+        self.objects[:] = [o for o in self.objects if id(o) not in ids]
+        return {"removed": len(victims), "backup": self._backup_path()}
+
+    def _modify_objects(self, p: dict[str, Any]) -> dict[str, Any]:
+        targets = self._select(p, True)
+        self._require_write(p, "modify_objects")
+        move, setv = p.get("move") or {}, p.get("set") or {}
+        uids = []
+        for o in targets:
+            pr = o["props"]
+            if move:
+                pr["2"] = f"{float(pr.get('2', 0)) + move.get('dx', 0):g}"
+                pr["3"] = f"{float(pr.get('3', 0)) + move.get('dy', 0):g}"
+            for k, v in setv.items():
+                if v is None:
+                    pr.pop(k, None)
+                else:
+                    pr[k] = str(v)
+            o["uid"] = self._next_uid  # re-created in the real mod
+            self._next_uid += 1
+            uids.append(o["uid"])
+        return {"modified": len(uids), "uids": uids, "backup": self._backup_path()}
+
+    def _list_objects(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_editor()
+        matched = self._select(p, False)
+        off, lim = int(p.get("offset", 0)), int(p.get("limit", 500))
+        return {"total": len(matched), "offset": off,
+                "objects": [self._describe(o, bool(p.get("object_strings"))) for o in matched[off:off + lim]]}
+
+    def _get_triggers(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_editor()
+        out = [self._describe(o, True) for o in self.objects
+               if int(o["props"]["1"]) in TRIGGER_IDS.values()
+               and (p.get("id") is None or int(o["props"]["1"]) == int(p["id"]))]
+        return {"count": len(out), "triggers": out}
 
     # -- default commands --------------------------------------------------------
     def _status(self, p: dict[str, Any]) -> dict[str, Any]:
