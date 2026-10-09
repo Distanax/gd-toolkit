@@ -17,7 +17,8 @@ comparison against corpus levels of the target tier (numbers cited) and positive
 - [ ] Scope matches the plan's MoSCoW Musts (notes/planning-a-level.md). Evidence: PLAN.md checklist.
 
 ## 2. Gameplay clarity
-- [ ] Clear gameplay [R p.9]: every input is readable before it's needed (pending: task 20 pacing-3).
+- [ ] Clear gameplay [R p.9]: every input is readable before it's needed; deaths are fast and
+  attributable (notes/pacing-3-fairness.md, pacing-1-basics.md).
   Evidence: fairness linter + frames at each new mechanic.
 - [ ] No unexplained deaths, esp. at transitions (notes/playtesting.md "playability").
   Evidence: linter clean + Distanax playtest log.
@@ -41,7 +42,8 @@ comparison against corpus levels of the target tier (numbers cited) and positive
   Hard-Harder level (notes/frame-perfects-alignment.md, advanced-hitboxes.md, refresh-rates.md).
   Evidence: sim windows table (min window per click).
 - [ ] Coyote-time margins on platform edges; enlarged orb/portal hitboxes or No Touch where needed;
-  new mechanics eased in (pending: tasks 16, 20). Evidence: linter + frames.
+  new mechanics eased in; help doesn't become hand-holding (notes/pacing-3-fairness.md).
+  Evidence: fairness linter + frames.
 
 ## 6. Pacing and speed
 - [ ] Speed changes follow the music's energy; no 0.5x->4x jumps; successive speed-ups eased;

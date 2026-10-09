@@ -50,9 +50,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 17 done: notes/mechanics-1-intro.md (komatic5, NotAModerator): extensive/immersive/fair mechanics, introduce -> experiment -> avoid burnout, skill chains. notes/mechanics-2-gameplay-loops.md (komatic5, etherail): loops easy/expandable/rewarding, VEIL vs DAYA cases. Mapped to a skill-chain table in PLAN.md and a first-use easing check in the fairness linter.
 - 2026-10-09: Task 18 done: notes mechanics-3-feedback (illusion2, sparktwee), mechanics-4-decision-making (intercomprehensible et al.), mechanics-5-limitations-strategy (illusion2 et al.): general game design; applicable parts recorded (consistent object behaviour, effects as feedback, risk/reward on branches, motif reuse in new contexts, readability over strategy for a classic level).
 - 2026-10-09: Task 19 done: notes/pacing-1-basics.md (komatic5, azgamez, creeperiv): flow conditions (clear goals, rapid feedback, adequate challenge), micro flow. notes/pacing-2-progression.md (komatic5, Half-Cooked Ramen): macro flow, chart difficulty+intensity per section, skill ordering, typical whole-level shape, match the song. Mapped to plan-vs-measured section charts and delayed-death checks.
+- 2026-10-09: Task 20 done: notes/pacing-3-fairness.md (TDP9, NotAModerator): fairness = can teach its rules; coyote-time platform margins, lenient orb/portal hitboxes, No Touch + inner hazard hitboxes, predictability, helping, mechanic easing, micro-pacing leniency, avoid hand-holding (SLAM). No numeric thresholds in the guide (ours from sim/corpus). Fairness linter rule table; CHECKLIST clarity/fairness rows cited.
 
 ## Next
-- Task 20: notes pacing-3-fairness.
+- Task 21: notes pacing-4 + pacing-5.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's
