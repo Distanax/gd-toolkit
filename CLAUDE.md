@@ -3,12 +3,16 @@
 Toolkit for building Geometry Dash levels **in code**, made by Claude + Distanax. Read this first;
 `docs/NOTES.md` holds the full running notes (song map, physics tables, reference study, decisions).
 
-## Active mission: gd-bridge (Geode mod + MCP server for live editor control)
-**Start every session with the resume protocol in `PROGRESS.md`:** `git pull`, read this file,
-`PROGRESS.md` and `TASKS.md`, then do the first unchecked task that isn't `[blocked: Distanax]`.
-One task = one commit + push; update `PROGRESS.md` in the same commit. Never redo checked tasks.
-Things Distanax must do in-game go in `TESTING.md`. Mod code: `mod/` (built only in CI);
-MCP server: `server/`.
+## Active mission: GD mastery (learn to make rated-standard levels; capstone Thermal Lock)
+**Start every session with the resume protocol in `mastery/PROGRESS.md`:** `git pull`, read this file,
+`mastery/PROGRESS.md` and `mastery/TASKS.md`, then do the next unchecked task you can do now ([offline]
+always, [editor] only if the bridge answers). One task = one commit + push. Things Distanax must do go
+in `mastery/PLAYTEST.md`. Study notes: `mastery/notes/`; lessons: `mastery/LESSONS.md`; self-review
+checklist: `mastery/CHECKLIST.md`. Never claim beatable/fun/rate-worthy without evidence; cite sources.
+
+## Finished mission: gd-bridge (v1.0.2, verified live 2026-10-09)
+Records: `PROGRESS.md`, `TASKS.md`, `TESTING.md` (root). Mod code: `mod/` (built only in CI);
+MCP server: `server/`. Re-run `tests/e2e_bridge.py` + `tests/e2e_extra_bridge.py` after any mod change.
 
 ## gd-bridge tool reference (MCP server `gd-bridge`)
 Live control of the GD editor on Distanax's PC. Chain: MCP tool -> `server/` (Python, stdio) ->
