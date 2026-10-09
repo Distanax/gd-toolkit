@@ -43,8 +43,14 @@ up the level string first; never upload levels online.
   path mod, Win64) green on first run (run 37879730513, 2.5 min, artifact `gd-bridge-win` 13 KB).
   Triggers: push to main touching `mod/**` or the workflow, plus manual dispatch.
 
+- 2026-10-09: Task 6 done: release job (ubuntu, `gh release`, contents: write). Main builds recreate a
+  rolling prerelease tagged `latest` on the new commit; `v*` tags get versioned releases. Verified:
+  release `latest` @ d9d6881 with `distanax.gd-bridge.geode` (13 KB); stable URL
+  https://github.com/Distanax/gd-toolkit/releases/download/latest/distanax.gd-bridge.geode -> 200.
+  **Acceptance 1 met.**
+
 ## Next
-- Task 6: publish the .geode as a release asset.
+- Task 7: install guide in TESTING.md.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
