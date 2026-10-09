@@ -73,7 +73,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 48. MCP tools for M9
 
 ## M10 — End-to-end + docs
-- [ ] 49. tests/e2e_bridge.py: create "CLAUDE test", add blocks/spikes/orb/move trigger, read back, screenshot, playtest 3 s with frames, save (acceptance 4)
+- [x] 49. tests/e2e_bridge.py: create "CLAUDE test", add blocks/spikes/orb/move trigger, read back, screenshot, playtest 3 s with frames, save (acceptance 4)
 - [ ] 50. TESTING.md: how to run the e2e test and what to report
 - [ ] 51. [blocked: Distanax] Run the e2e test and report
 - [ ] 52. CLAUDE.md: every tool with examples + known limits (acceptance 5)

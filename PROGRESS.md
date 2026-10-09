@@ -93,9 +93,10 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 47 done: list_backups(level?, limit?) newest first {file, bytes}; restore_backup(file, level?, confirm_name?): bare file names only (no path traversal), backs up the current state, then replaceLevelString.
 - 2026-10-09: Task 45 done: MCP save_level, create_level, open_level, list_levels, get_music (committed with 48).
 - 2026-10-09: Task 48 done: MCP undo, redo, list_backups, restore_backup; mock implements level list, prepare-to-leave rules, undo/redo stacks and backups; 35 tests pass (fixture arg renamed tool_name, positional-only, so tools can take a `name` argument).
+- 2026-10-09: Task 49 done: tests/e2e_bridge.py (acceptance 4): drives the real MCP server in-process (tools -> BridgeClient -> mod). Opens or creates "CLAUDE test", empties it, adds 11 blocks (one in group 1), 2 spikes, a yellow orb and a move trigger (group 1, move_y 60), checks counts/positions/trigger keys via list_objects + get_triggers + get_level_string, screenshots the region, playtests with capture_frames(6 x 500 ms = 3 s), stops, saves. Writes out/e2e/<UTC>/ (report.json, screenshot, frames, level_string.txt). --mock runs it against MockBridge: 13/13 pass locally and it now runs in Python CI. M8/M9 mod build failed once (LevelEditorLayer has no m_guidelineString) and was fixed in 5786b7a.
 
 ## Next
-- M10: e2e test (task 49), TESTING section 2 (50), CLAUDE.md tool docs (52).
+- Task 50: TESTING.md section 2 (how to run e2e).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
