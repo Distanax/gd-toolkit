@@ -46,7 +46,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 29. Mod: `remove_objects`
 - [x] 30. Mod: `modify_objects` (position, rotation, scale, groups, colour, raw keys)
 - [x] 31. Mod: `list_objects` (filters, paging) and `get_triggers(type)`
-- [ ] 32. MCP tools for M5 with friendly arguments (names like "spike", "move_trigger") + tests
+- [x] 32. MCP tools for M5 with friendly arguments (names like "spike", "move_trigger") + tests
 
 ## M6 — Camera + screenshots
 - [ ] 33. Research: editor camera (EditorUI / m_objectLayer position + scale), CCRenderTexture -> PNG in v5

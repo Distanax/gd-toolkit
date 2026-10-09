@@ -76,9 +76,10 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 29 done: (commands/Objects.cpp, one commit for 26-31)
 - 2026-10-09: Task 30 done: (commands/Objects.cpp, one commit for 26-31)
 - 2026-10-09: Task 31 done: commands/Objects.cpp (tasks 26-31 in one file/commit): objects travel as GD object strings (same format as level strings and toolkit/gdlib.py; parse/join helpers). add_objects = createObjectsFromString(noUndo=false) -> uids. Selector {uids, ids, groups, region, triggers, all} ANDed, empty refused for writes. remove_objects = removeObject(obj, false). modify_objects = edit keys on getSaveString + optional move, then remove + re-create (works for every property incl. trigger settings; uids change). list_objects (paged, max 5000, optional object strings), get_triggers(id). Every write: editor + not playtesting + CLAUDE guard + backup.
+- 2026-10-09: Task 32 done: Mod objects green in CI (e10e810); MCP object tools (6e55d4c) green in Python CI.
 
 ## Next
-- Wait for CI; then task 32 (MCP side already pushed) and M6 camera/screenshot (drafted: Capture.*, commands/View.cpp).
+- M6.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
