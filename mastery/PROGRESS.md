@@ -45,9 +45,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 12 done: notes/creating-gameplay.md (mesoionosphere, ChuckOlate): vision, sectioning, hybrid build method, setup groups, motifs with variation, movement flow + clean portal entry, four speed-change kinds + easing. notes/making-sync.md (e.clypse, NotAModerator): pick one layer, tools, speed-portal placement, sync playtesting. GAP: beat-strength order, holds, mode changes on strong beats are NOT in making-sync; CHECKLIST updated (motifs now cited; the rest pending task 21).
 - 2026-10-09: Task 13 done: notes/making-consistent-gameplay.md (e.clypse, psytrancegd): error types, object fixes (slope grid gap, pads, teleports, H/J-blocks), physics-based design (platforms reset momentum, portals before orbs, no orb chains, flying-mode transition risks), Options trigger; linter rule table with sim-jitter evidence. CHECKLIST consistency row now cited.
 - 2026-10-09: Task 14 done: notes/making-fast-gameplay.md (illusion2, kbtrains, NotAModerator): relative speed, use with musical energy, contrast without huge jumps, readability, click rate, 3-4x portals/timewarp/move-trigger speed. notes/making-slow-gameplay.md (komatic5, Half-Cooked Ramen): slow parts are designed (fakes, slopes, mode switches, correct path first). CHECKLIST pacing/mode-fit rows now cited.
+- 2026-10-09: Task 15 done: notes/making-structures.md (komatic5, etherail): essential points, structures point at them, block sides/hazards stop skips, grid snap and simple shapes; grid + skip checks. notes/making-duals.md (e.clypse, naem.less, ChuckOlate): gravity linking (cube+wave share), symmetrical/asymmetrical/2-player, one focus icon, borders 9/10 blocks, offset duals, gimmicks. CHECKLIST structure row cited.
 
 ## Next
-- Task 15: notes making-structures + making-duals.
+- Task 16: notes advanced-hitboxes + frame-perfects-alignment + refresh-rates.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's

@@ -25,7 +25,7 @@ Notes go to `mastery/notes/<guide>.md` (one file per guide, cited). Lessons go t
 - [x] 12. [offline] notes: creating-gameplay, making-sync
 - [x] 13. [offline] notes: making-consistent-gameplay
 - [x] 14. [offline] notes: making-fast-gameplay, making-slow-gameplay
-- [ ] 15. [offline] notes: making-structures, making-duals
+- [x] 15. [offline] notes: making-structures, making-duals
 - [ ] 16. [offline] notes: advanced-hitboxes, frame-perfects-alignment, refresh-rates
 
 ## M3 — Intermediate gameplay notes (priority 3)
