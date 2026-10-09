@@ -8,6 +8,13 @@ on:
     paths:
       - "mod/**"
       - ".github/workflows/build-mod.yml"
+      - ".github/build-error-matcher.json"
+
+# Pushes in quick succession: keep only the newest run per ref, so two release jobs never race to
+# recreate the "latest" release.
+concurrency:
+  group: build-mod-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
