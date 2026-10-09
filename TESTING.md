@@ -37,8 +37,34 @@ Safety: the mod listens on 127.0.0.1 only (not reachable from other computers), 
 `bridge.json`, only edits levels named `CLAUDE ...` unless you confirm another by exact name, backs
 up before every change, and never uploads anything. Uninstall = delete the `.geode` file.
 
-## 2. Run the end-to-end test
-_Written in task 50._
+## 2. Run the end-to-end test (about 5 minutes)
+This drives GD exactly the way Claude will: MCP tools -> bridge -> mod. It only ever touches a level
+called **CLAUDE test** (created if missing, emptied and rebuilt if it exists).
+
+1. **Update the mod** to the newest build: run the PowerShell command from section 1 again (with GD
+   closed), then start GD. Stay on the main menu (or any screen that isn't the editor with one of your
+   own levels open — the test refuses to leave those, so your unsaved work is never discarded).
+2. **Install/update the MCP server** (PowerShell):
+   ```powershell
+   py -m pip install --upgrade "git+https://github.com/Distanax/gd-toolkit#subdirectory=server"
+   ```
+3. **Run the test** (PowerShell):
+   ```powershell
+   cd C:\Work\ClaudeProjects\gd-toolkit-repo
+   git pull
+   py tests\e2e_bridge.py
+   ```
+4. **What you should see in GD** (about 15 seconds): the editor opens "CLAUDE test"; a row of blocks,
+   two spikes, a yellow orb, a raised block and a move trigger appear; the view jumps to them for a
+   screenshot; a playtest runs for about 3 seconds and stops; the level is saved.
+5. **What you should see in PowerShell**: one `[PASS]`/`[FAIL]` line per step, then `ALL PASSED` or
+   `FAILED` and the path of a report folder (`out\e2e\<time>\`) holding `report.json`, the screenshot
+   and the playtest frames.
+6. **Report back** in chat: `ALL PASSED`, or paste the `[FAIL]` lines (and `report.json` if asked).
+   If GD crashed or froze, also send the newest log from `...\Geometry Dash\geode\logs\`.
+
+Useful extra: `py tests\e2e_bridge.py --mock` runs the same script against a fake bridge with no GD at
+all — if that fails too, the problem is the Python side, not the mod.
 
 ## Results
 _(none yet)_
