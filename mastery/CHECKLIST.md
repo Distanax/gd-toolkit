@@ -37,7 +37,8 @@ comparison against corpus levels of the target tier (numbers cited) and positive
   1 block is our working value). Evidence: consistency linter clean + jitter sim.
 
 ## 5. Fairness
-- [ ] No frame-perfect inputs; windows measured at GD's physics rate (pending: task 16).
+- [ ] No frame-perfect inputs (window <= 1 physics step at 240/s) and no hard timings (2-5 steps) for a
+  Hard-Harder level (notes/frame-perfects-alignment.md, advanced-hitboxes.md, refresh-rates.md).
   Evidence: sim windows table (min window per click).
 - [ ] Coyote-time margins on platform edges; enlarged orb/portal hitboxes or No Touch where needed;
   new mechanics eased in (pending: tasks 16, 20). Evidence: linter + frames.
