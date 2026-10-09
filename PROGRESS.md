@@ -49,8 +49,12 @@ up the level string first; never upload levels online.
   https://github.com/Distanax/gd-toolkit/releases/download/latest/distanax.gd-bridge.geode -> 200.
   **Acceptance 1 met.**
 
+- 2026-10-09: Task 7 done: TESTING.md section 1 (PowerShell download into `<GD>\geode\mods`, three
+  load checks: Geode mod list, `/health` in a browser, bridge.json). The `/health` check needs task 11's
+  build. Task 8 is blocked on Distanax.
+
 ## Next
-- Task 7: install guide in TESTING.md.
+- Task 9: research Geode v5 threading / matjson / save dir (mostly done while waiting on CI, see notes).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
