@@ -41,9 +41,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 8 done: notes/asking-for-feedback.md (komatic5): be specific, describe intent/inspiration/stage, polite receiving, list -> evaluate -> revise -> re-ask; mapped to PLAYTEST.md request format and the decision table for received feedback.
 - 2026-10-09: Task 9 done: notes/the-rating-system.md (sparktwee, NotAModerator): roles, lifecycle, tiers, request servers/streams/DMs, known vs unknown (criteria subjective, no checklist), how to improve chances; mapped to the feedback package (venues verified with dates).
 - 2026-10-09: Task 10 done: mastery/CHECKLIST.md v0: 12 categories (length/scope, clarity, sync, consistency, fairness, pacing/speed, structure, deco, effects, polish, performance/LDM, presentation), scoring anchors (no evidence = 0, 7 = all criteria evidenced, 9-10 needs corpus comparison + tester feedback). Rules from the mission brief are marked "(pending: task N)" until their guide is read and cited.
+- 2026-10-09: Task 11 done: notes/using-gamemodes.md (illusion2, komatic5) + notes/gameplay-objects.md (sparktwee, xplode09): per-mode fit/pitfalls table (no mode switch for 1-2 inputs, orb chains inconsistent, idle ship, wave chokepoints, swing not on ship gameplay, robot hold = note strength), orb strengths, portals, letter blocks D/J/S/H/F; derived linter checks and sim/object-ID follow-ups.
 
 ## Next
-- Task 11: notes using-gamemodes + gameplay-objects (WebFetch).
+- Task 12: notes creating-gameplay + making-sync.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's
