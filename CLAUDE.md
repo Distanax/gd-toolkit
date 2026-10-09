@@ -45,7 +45,7 @@ y 15 is node y 105 — and the mod converts both ways; measured live 2026-10-09.
 | `playtest` | `start` / `stop` / `pause` / `resume` / `status`; `from_x` starts from an x (temporary start pos). | `{"action": "start", "from_x": 1500}` |
 | `capture_frames` | During a playtest: N frames every interval_ms, returned as images in order. | `{"count": 6, "interval_ms": 500}` |
 | `get_music` | Song ID / official track, offset, fade in/out, guidelines (time + colour). | `{}` |
-| `undo` / `redo` | GD's own undo/redo of one editor action — for hand edits only; tool edits stay out of GD's history (revert them with `restore_backup`). | `{}` |
+| `undo` / `redo` | GD's own undo/redo of one editor action — for hand edits only (revert tool edits with `restore_backup`, see limits). | `{}` |
 | `list_backups` | Backups of a level, newest first. | `{"level": "CLAUDE test"}` |
 | `restore_backup` | Replace the open level with a backup (current state backed up first). | `{"file": "20261009T040557123Z_add_objects.txt"}` |
 
@@ -71,9 +71,11 @@ from a gdlib build) -> `screenshot` to check the layout -> `playtest start` + `c
   not exercise (undo/redo, restore_backup, modify_objects, playtest from_x, get_music) are mock-tested
   only so far.
 - Windows only (the mod uses Winsock; CI builds Win64 only).
-- **Tool edits are not in GD's undo history** (measured live: GD recorded the delete half of a
-  modify but not the re-create, so undo produced a duplicate). The tools write with noUndo; revert
-  them with `list_backups` + `restore_backup`. `undo`/`redo` are for hand edits.
+- **Don't use `undo` on tool edits.** GD's history records the objects a tool removes but not the
+  ones it creates, so undo after `modify_objects` leaves a duplicate (measured live). Revert tool
+  edits with `list_backups` + `restore_backup`; `undo`/`redo` are for hand edits. (Removing with
+  GD's noUndo flag instead frees the object while GD still uses it and kills the game — measured
+  live in 1.0.1, reverted in 1.0.2. Keep removeObject(obj, false).)
 - **Switching or reloading the editor is staged** (crash found live 2026-10-09: building a new
   LevelEditorLayer while the old one still ran -> access violation in GameObject::shouldBlendColor).
   `set_level_string`, `restore_backup`, `create_level`, `open_level` leave through GD's own exit

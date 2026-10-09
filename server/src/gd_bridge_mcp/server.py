@@ -206,9 +206,10 @@ def build_server(client: BridgeClient | None = None) -> MCPServer:
     # ---- undo / redo / backups ---------------------------------------------------------------
     @mcp.tool()
     def undo(confirm_name: str | None = None) -> dict[str, Any]:
-        """Undo the last editor action in GD's own undo history: that covers edits made by hand in GD,
-        NOT edits made through these tools (they stay out of GD's history). To revert a tool edit use
-        list_backups + restore_backup; every write tool makes a backup first."""
+        """Undo the last editor action in GD's own undo history. Use it for edits made by hand in GD,
+        not for edits made through these tools: GD records the objects a tool removes but not the ones
+        it creates, so undoing a tool edit leaves duplicates. To revert a tool edit use list_backups +
+        restore_backup; every write tool makes a backup first."""
         return call("undo", confirm_name=confirm_name)
 
     @mcp.tool()

@@ -32,7 +32,7 @@ GameObject* findByUid(LevelEditorLayer* lel, int uid) {
 }
 
 void removeTempStartPos(LevelEditorLayer* lel) {
-	if (auto obj = findByUid(lel, g_tempStartPosUid)) lel->removeObject(obj, true);
+	if (auto obj = findByUid(lel, g_tempStartPosUid)) lel->removeObject(obj, false);  // noUndo=true frees the object while GD still uses it (killed GD live)
 	g_tempStartPosUid = 0;
 }
 
@@ -188,7 +188,7 @@ BRIDGE_COMMAND(playtest) {
 			backupLevel(lel, "playtest_from_x");
 			removeTempStartPos(lel);
 			double fromY = optNumber(params, "from_y").value_or(15);
-			auto created = lel->createObjectsFromString(fmt::format("1,31,2,{},3,{};", *fromX, fromY), true, true);
+			auto created = lel->createObjectsFromString(fmt::format("1,31,2,{},3,{};", *fromX, fromY), false, true);
 			if (created && created->count() > 0) {
 				auto sp = static_cast<StartPosObject*>(created->objectAtIndex(0));
 				if (sp->m_startSettings) sp->m_startSettings->m_targetOrder = TEMP_START_ORDER;
