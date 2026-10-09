@@ -9,7 +9,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [ ] 2. [blocked: Distanax] Create the "gd-bridge continue" routine (every 3 h) and record its id in PROGRESS.md — needs GitHub connected to claude.ai (TESTING.md section 0)
 
 ## M1 — Mod skeleton + CI (acceptance 1)
-- [ ] 3. Research: Geode v5 mod layout (mod.json schema, CMake, `$on_mod(Loaded)`), pin SDK v5.10.1 / GD 2.2081; notes in PROGRESS.md
+- [x] 3. Research: Geode v5 mod layout (mod.json schema, CMake, `$on_mod(Loaded)`), pin SDK v5.10.1 / GD 2.2081; notes in PROGRESS.md
 - [ ] 4. mod/ skeleton (mod.json id `distanax.gd-bridge`, CMakeLists, main.cpp that logs on load)
 - [ ] 5. GitHub Actions: build Win64 .geode on every push to main (build-geode-mod, sdk v5.10.1); get it green
 - [ ] 6. CI: publish the .geode as a release asset (rolling `latest` release on main, versioned on `v*` tags)

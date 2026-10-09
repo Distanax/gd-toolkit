@@ -34,8 +34,10 @@ up the level string first; never upload levels online.
   repo Distanax/gd-toolkit, tools Bash/Read/Write/Edit/Glob/Grep/WebFetch/WebSearch, prompt = the
   mission's continue prompt plus a note that cloud runs have no PC access and must verify CI via the API.
 
+- 2026-10-08: Task 3 done (Geode v5 layout research, notes under Environment facts).
+
 ## Next
-- Task 3: research the Geode v5 mod layout.
+- Task 4: mod/ skeleton.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
@@ -44,6 +46,20 @@ up the level string first; never upload levels online.
   `sdk` accepts a version, so pin `v5.10.1`.
 - Template (geode-sdk/example-mod): mod.json `"geode": "<ver>"`, `"gd": {"win": "2.2081"}`;
   CMake 3.21, C++23, `add_subdirectory($ENV{GEODE_SDK})` + `setup_geode_mod(target)`.
+- **Distanax's install, read from the Geode log 2026-10-08:** "Running Geode v5.10.1 in Geometry Dash
+  v2.2081 on Windows". GD lives in `C:\Program Files (x86)\Steam\steamapps\common\Geometry Dash`;
+  installed mods go in `<GD>\geode\mods\`, logs in `<GD>\geode\logs\`.
+- **Per-mod save dir** = `dirs::getModsSaveDir() / <mod id>` = `%LOCALAPPDATA%\GeometryDash\geode\mods  distanax.gd-bridge\` (Mod.cpp `m_saveDirPath`, Dirs.cpp, windows/util.cpp `dirs::getSaveDir` uses
+  LOCAL_APPDATA + exe name). Verified the folder layout exists on the PC.
+- **mod.json (docs.geode-sdk.org/mods/configuring):** required `geode`, `gd`, `id`, `name`, `version`,
+  `developer`/`developers`. id: lowercase a-z, `.`, `_`, `-`. v5 reworked dependencies (`importance`
+  removed -> `required` / `breaking`); superseding is server-side now.
+- **v5 API (headers at tag v5.10.1):** `$on_mod(Loaded)` (loader/ModEvent.hpp), `geode::queueInMainThread`
+  (loader/Loader.hpp), `Mod::get()->getSaveDir()` / `getSettingValue<T>(key)` (loader/Mod.hpp),
+  `geode::async` (utils/async.hpp, in the prelude, `async::waitForMainThread`). C++23 required.
+  `Mod::isEnabled` was renamed `isLoaded`; `geode::cast::as`, `CCARRAY_FOREACH` removed (use `CCArrayExt`).
+- Other editor mods installed on the PC: hjfod.betteredit, hjfod.gdshare, hjfod.gmd-api,
+  alphalaneous.editortab_api (possible conflicts to keep in mind; none expected).
 - No local C++ toolchain on the PC; all mod builds happen in CI. Python 3.14 is installed locally.
 
 ## Decisions
@@ -61,4 +77,4 @@ up the level string first; never upload levels online.
 - **A mock bridge** lets the Python side be built and tested without GD running.
 
 ## Open questions
-- Exact GD version on Distanax's Steam install (must be 2.2081 for Geode v5.10.1) — confirm in task 8.
+- (resolved) GD version is 2.2081, matching Geode v5.10.1.
