@@ -33,7 +33,8 @@ comparison against corpus levels of the target tier (numbers cited) and positive
 ## 4. Consistency
 - [ ] No orb chains; portals before orbs; slope transitions with 1-block gaps; H-blocks after high
   launches; J-blocks near blue/black orbs; consistent mode entries; Options-trigger input locks only
-  where justified (pending: task 13). Evidence: consistency linter clean.
+  where justified (notes/making-consistent-gameplay.md; slope gap size: the guide says "a gridblock" —
+  1 block is our working value). Evidence: consistency linter clean + jitter sim.
 
 ## 5. Fairness
 - [ ] No frame-perfect inputs; windows measured at GD's physics rate (pending: task 16).
