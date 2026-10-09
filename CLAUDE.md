@@ -3,6 +3,13 @@
 Toolkit for building Geometry Dash levels **in code**, made by Claude + Distanax. Read this first;
 `docs/NOTES.md` holds the full running notes (song map, physics tables, reference study, decisions).
 
+## Active mission: gd-bridge (Geode mod + MCP server for live editor control)
+**Start every session with the resume protocol in `PROGRESS.md`:** `git pull`, read this file,
+`PROGRESS.md` and `TASKS.md`, then do the first unchecked task that isn't `[blocked: Distanax]`.
+One task = one commit + push; update `PROGRESS.md` in the same commit. Never redo checked tasks.
+Things Distanax must do in-game go in `TESTING.md`. Mod code: `mod/` (built only in CI);
+MCP server: `server/`.
+
 ## Workflow
 1. Generate a `.gmd` with Python (`toolkit/gdlib.py`, level scripts under `levels/`).
 2. Save it to `C:\Work\ClaudeProjects\gd_levels\` (scripts write to `out/` first; copy across).
