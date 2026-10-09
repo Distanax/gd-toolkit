@@ -78,9 +78,11 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 31 done: commands/Objects.cpp (tasks 26-31 in one file/commit): objects travel as GD object strings (same format as level strings and toolkit/gdlib.py; parse/join helpers). add_objects = createObjectsFromString(noUndo=false) -> uids. Selector {uids, ids, groups, region, triggers, all} ANDed, empty refused for writes. remove_objects = removeObject(obj, false). modify_objects = edit keys on getSaveString + optional move, then remove + re-create (works for every property incl. trigger settings; uids change). list_objects (paged, max 5000, optional object strings), get_triggers(id). Every write: editor + not playtesting + CLAUDE guard + backup.
 - 2026-10-09: Task 32 done: Mod objects green in CI (e10e810); MCP object tools (6e55d4c) green in Python CI.
 - 2026-10-09: Task 33 done: Camera = GJBaseGameLayer::m_objectLayer (scale = zoom, position = pan): centre (x,y) at zoom z <=> position = winSize/2 - (x,y)*z; zoom via EditorUI::updateZoom (keeps UI in sync, clamps). Capture = CCRenderTexture::create(winSize points; allocates points*content scale = full-res pixels), begin, runningScene->visit(), end, newCCImage(true), saveToFile(path, false).
+- 2026-10-09: Task 34 done: get_camera / move_camera(x?, y?, zoom?) in commands/View.cpp (Capture.cpp getCamera/setCamera). Committed with 35.
+- 2026-10-09: Task 35 done: screenshot(x?, y?, zoom? | region?, hide_ui=true, restore_camera=true): aims the editor camera (not during playtest), hides EditorUI for the shot, captures to <save dir>/captures/shot_<UTC>_<n>.png, restores camera; works outside the editor as a plain screen capture. Returns {path, width, height, camera}.
 
 ## Next
-- Tasks 34-35.
+- Task 36 (MCP side, same push).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
