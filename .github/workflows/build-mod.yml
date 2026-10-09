@@ -1,0 +1,29 @@
+name: Build gd-bridge mod
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "mod/**"
+      - ".github/workflows/build-mod.yml"
+
+jobs:
+  build:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # SDK version comes from mod/mod.json ("geode": "5.10.1"); the action's sdk input defaults to "given".
+      - name: Build the mod
+        id: build
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          path: mod
+          target: Win64
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gd-bridge-win
+          path: ${{ steps.build.outputs.build-output }}
