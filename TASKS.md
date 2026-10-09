@@ -6,7 +6,7 @@ Mission and acceptance criteria: PROGRESS.md.
 
 ## M0 — Mission setup
 - [x] 1. TASKS.md, PROGRESS.md, TESTING.md skeleton, resume protocol in CLAUDE.md
-- [ ] 2. [blocked: Distanax] Create the "gd-bridge continue" routine (every 3 h) and record its id in PROGRESS.md — needs GitHub connected to claude.ai (TESTING.md section 0)
+- [x] 2. Create the "gd-bridge continue" routine (every 3 h) and record its id in PROGRESS.md
 
 ## M1 — Mod skeleton + CI (acceptance 1)
 - [x] 3. Research: Geode v5 mod layout (mod.json schema, CMake, `$on_mod(Loaded)`), pin SDK v5.10.1 / GD 2.2081; notes in PROGRESS.md

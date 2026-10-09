@@ -3,7 +3,7 @@
 Things only you can do in-game. Each section says exactly what to do and what to report back.
 Report results by telling Claude in chat (or add a note under "Results" at the bottom and push).
 
-## 0. Connect GitHub to claude.ai (2 minutes) — unblocks the auto-continue routine
+## 0. Connect GitHub to claude.ai — DONE 2026-10-09 (routine created)
 Creating the "gd-bridge continue" routine failed with `github_token_missing`: cloud routines need your
 GitHub account connected to claude.ai so they can clone and push `Distanax/gd-toolkit`.
 1. Open https://claude.ai/code in your browser and sign in.

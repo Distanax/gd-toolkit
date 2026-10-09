@@ -100,9 +100,13 @@ up the level string first; never upload levels online.
 - 2026-10-09: Captures older than 3 days are pruned on mod load (screenshots/frames are a few MB each;
   backups are untouched). Removes the "captures not pruned" limit from CLAUDE.md.
 
+- 2026-10-09: Task 2 done: Distanax connected GitHub to claude.ai; routine "gd-bridge continue" created,
+  id trig_01A42oiYtc4k2m5ooq4FRL1R (https://claude.ai/code/routines/trig_01A42oiYtc4k2m5ooq4FRL1R),
+  cron `31 */3 * * *` UTC, Sonnet 5.5, Default environment. Delete it in task 53 (claude.ai/code/routines;
+  the API can't delete routines).
+
 ## Next
 **Every task Claude can do alone is done. Remaining work is blocked on Distanax:**
-- Task 2: connect GitHub to claude.ai (TESTING.md section 0), then create the routine.
 - Task 8: install the mod and confirm it loads (TESTING.md section 1). Acceptance 2.
 - Task 51: run `py tests\e2e_bridge.py` and report (TESTING.md section 2). Acceptance 4.
 - Task 53 (tag v1.0.0, delete the routine) after 8 and 51 are confirmed.
