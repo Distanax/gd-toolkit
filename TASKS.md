@@ -34,8 +34,8 @@ Mission and acceptance criteria: PROGRESS.md.
 ## M4 — Level string read/write + safety
 - [x] 20. Research: LevelEditorLayer / GJGameLevel bindings for 2.2081 (getLevelString, createObjectsFromString, removeAllObjects)
 - [ ] 21. Mod: `get_level_string`
-- [ ] 22. Mod: backup store (`<save dir>/backups/<level>/<timestamp>.txt`, rotation) used by every write command
-- [ ] 23. Mod: safety guard — writes only if level name starts with "CLAUDE " or `confirm_name` matches exactly
+- [x] 22. Mod: backup store (`<save dir>/backups/<level>/<timestamp>.txt`, rotation) used by every write command
+- [x] 23. Mod: safety guard — writes only if level name starts with "CLAUDE " or `confirm_name` matches exactly
 - [ ] 24. Mod: `set_level_string` (backup -> clear -> load)
 - [ ] 25. MCP tools: `get_level_string`, `set_level_string` (+ tests on mock)
 
