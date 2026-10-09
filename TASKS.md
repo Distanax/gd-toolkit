@@ -21,8 +21,8 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 10. Protocol spec in docs/PROTOCOL.md (HTTP/1.1 POST /rpc on 127.0.0.1, JSON-RPC-ish body, token header, error codes)
 - [x] 11. Mod: Winsock listener thread on 127.0.0.1 (port from settings, fallback to ephemeral), minimal HTTP parser
 - [x] 12. Mod: random token + port written to `<mod save dir>/bridge.json`; reject requests without it
-- [ ] 13. Mod: main-thread dispatcher (queue -> promise, timeout) + command registry; `ping` command
-- [ ] 14. Mod: `status` command (scene, editor open, level name/ID, object count, GD/Geode/mod versions)
+- [x] 13. Mod: main-thread dispatcher (queue -> promise, timeout) + command registry; `ping` command
+- [x] 14. Mod: `status` command (scene, editor open, level name/ID, object count, GD/Geode/mod versions)
 
 ## M3 — Python MCP server
 - [ ] 15. server/ package skeleton (pyproject, `gd-bridge-mcp` entry point, FastMCP stdio, Python >= 3.10)

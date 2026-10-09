@@ -57,9 +57,11 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 10 done: docs/PROTOCOL.md: bridge.json discovery, HTTP POST /rpc + X-GD-Bridge-Token, /health, Origin rejected, error codes, main-thread execution, jobs for long work, PNGs returned as file paths, safety rules.
 - 2026-10-09: Task 11 done: Winsock listener on 127.0.0.1 (port setting 47821, ephemeral fallback), /health, Origin -> 403. CI green at 1f2b6eb after one fix: Geode PCH already includes Windows.h -> winsock.h, so winsock2.h redefined sockaddr; now uses winsock.h. Added a problem matcher so compiler errors show up as public check-run annotations (raw logs need auth).
 - 2026-10-09: Task 12 done: Auth.cpp: 32 random bytes (MSVC random_device = OS CSPRNG) as hex, bridge.json {protocol, port, token, pid, mod_version} written atomically to the mod save dir, constant-time token compare. Wired into main.cpp with task 13. Workflow: matcher file in path filter + concurrency group (no racing release jobs).
+- 2026-10-09: Task 13 done: Rpc.cpp: command registry (BRIDGE_COMMAND macros), main-thread dispatch via queueInMainThread + promise with 10 s timeout, RpcError -> protocol error codes, param helpers. main.cpp: POST /rpc with token auth, JSON body {id, method, params} -> {id, ok, result|error}. ping runs off-thread.
+- 2026-10-09: Task 14 done: status command (in commands/Core.cpp, same commit as 13): scene (first child of running scene), in_editor, in_level, playtest (not/playing/paused), level {name, id, song_id, audio_track, object_count}, versions {mod, geode, gd, protocol}.
 
 ## Next
-- Task 13: RPC dispatcher + ping.
+- Wait for CI on tasks 12-14; then task 15 (server package, drafted in server/).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
