@@ -27,7 +27,7 @@ Mission and acceptance criteria: PROGRESS.md.
 ## M3 — Python MCP server
 - [x] 15. server/ package skeleton (pyproject, `gd-bridge-mcp` entry point, FastMCP stdio, Python >= 3.10)
 - [x] 16. Bridge client: discover bridge.json, token auth, timeouts, clear "GD not running / mod not loaded" errors
-- [ ] 17. Mock bridge (in-process fake mod) + pytest suite running against it; add a Python CI job
+- [x] 17. Mock bridge (in-process fake mod) + pytest suite running against it; add a Python CI job
 - [x] 18. Tool: `status`
 - [ ] 19. README: one-command pip install + Claude desktop config snippet (acceptance 3)
 

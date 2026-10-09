@@ -1,0 +1,32 @@
+name: MCP server tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "server/**"
+      - "tests/**"
+      - ".github/workflows/server.yml"
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        python: ["3.10", "3.13"]
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} / py${{ matrix.python }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      # Exactly the one-command install from the README, from this checkout.
+      - name: Install
+        run: pip install "./server[test]"
+      - name: Entry point exists
+        run: python -c "import shutil, sys; sys.exit(0 if shutil.which('gd-bridge-mcp') else 1)"
+      - name: Tests (mock bridge, no GD needed)
+        run: python -m pytest server/tests -q
