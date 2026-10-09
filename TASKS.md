@@ -11,7 +11,7 @@ Mission and acceptance criteria: PROGRESS.md.
 ## M1 — Mod skeleton + CI (acceptance 1)
 - [x] 3. Research: Geode v5 mod layout (mod.json schema, CMake, `$on_mod(Loaded)`), pin SDK v5.10.1 / GD 2.2081; notes in PROGRESS.md
 - [x] 4. mod/ skeleton (mod.json id `distanax.gd-bridge`, CMakeLists, main.cpp that logs on load)
-- [ ] 5. GitHub Actions: build Win64 .geode on every push to main (build-geode-mod, sdk v5.10.1); get it green
+- [x] 5. GitHub Actions: build Win64 .geode on every push to main (build-geode-mod, sdk v5.10.1); get it green
 - [ ] 6. CI: publish the .geode as a release asset (rolling `latest` release on main, versioned on `v*` tags)
 - [ ] 7. TESTING.md: 5-minute install guide (download .geode, drop in mods folder, check log)
 - [ ] 8. [blocked: Distanax] Confirm the mod loads in GD (acceptance 2)

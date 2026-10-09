@@ -39,8 +39,12 @@ up the level string first; never upload levels online.
 - 2026-10-08: Task 4 done: mod/ skeleton (mod.json pins geode 5.10.1 / gd win 2.2081, CMake from
   example-mod, main.cpp logs on load). Not built yet; CI comes in task 5.
 
+- 2026-10-09: Task 5 done: `.github/workflows/build-mod.yml` (windows-latest, build-geode-mod@main,
+  path mod, Win64) green on first run (run 37879730513, 2.5 min, artifact `gd-bridge-win` 13 KB).
+  Triggers: push to main touching `mod/**` or the workflow, plus manual dispatch.
+
 ## Next
-- Task 5: GitHub Actions build, get it green.
+- Task 6: publish the .geode as a release asset.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
