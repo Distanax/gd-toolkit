@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
+    tags: ["v*"]          # path filters are not applied to tag pushes
     paths:
       - "mod/**"
       - ".github/workflows/build-mod.yml"
@@ -27,3 +28,38 @@ jobs:
         with:
           name: gd-bridge-win
           path: ${{ steps.build.outputs.build-output }}
+
+  release:
+    name: Publish release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: gd-bridge-win
+          path: dist
+
+      - name: List build output
+        run: ls -la dist
+
+      # main: a rolling "latest" prerelease, recreated on the new commit so the download URL never changes:
+      # https://github.com/<repo>/releases/download/latest/distanax.gd-bridge.geode
+      - name: Rolling "latest" release
+        if: github.ref == 'refs/heads/main'
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest dist/*.geode \
+            --target "$GITHUB_SHA" --prerelease \
+            --title "gd-bridge (latest main build)" \
+            --notes "Automatic build of main at $GITHUB_SHA. Install guide: TESTING.md."
+
+      - name: Versioned release
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.geode --verify-tag \
+            --title "gd-bridge $GITHUB_REF_NAME" --notes "Install guide: TESTING.md."
