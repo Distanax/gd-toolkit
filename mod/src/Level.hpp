@@ -40,6 +40,13 @@ void saveEditorLevel(LevelEditorLayer* lel);
 std::filesystem::path backupRoot();
 std::string sanitizeFileName(std::string const& name);
 
+// GD places every object 90 units higher in the scene than its level-string y (the editor ground sits at
+// node y 90; level-string ground row y = 15). Measured live 2026-10-09: string y 15 -> node y 105.
+// Every coordinate the bridge reports or accepts is in LEVEL-STRING space, same as toolkit/gdlib.py.
+inline constexpr float LEVEL_Y_OFFSET = 90.f;
+inline cocos2d::CCPoint toLevel(cocos2d::CCPoint node) { return {node.x, node.y - LEVEL_Y_OFFSET}; }
+inline cocos2d::CCPoint toNode(cocos2d::CCPoint level) { return {level.x, level.y + LEVEL_Y_OFFSET}; }
+
 inline constexpr std::size_t MAX_BACKUPS = 200;
 inline constexpr char const* SAFE_PREFIX = "CLAUDE ";
 

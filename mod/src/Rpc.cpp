@@ -53,19 +53,21 @@ matjson::Value dispatch(std::string const& method, matjson::Value const& params)
 	if (it == registry().end()) throw RpcError("unknown_method", fmt::format("no method '{}'", method));
 	Entry const& entry = it->second;
 
-	Outcome outcome;
-	if (!entry.opts.mainThread) {
-		outcome = runGuarded(entry, params);
-	} else {
-		auto promise = std::make_shared<std::promise<Outcome>>();
-		auto future = promise->get_future();
-		// The lambda owns copies, so a command that finishes after we gave up waiting is harmless.
-		queueInMainThread([promise, entry, params]() mutable { promise->set_value(runGuarded(entry, params)); });
-		if (future.wait_for(entry.opts.timeout) != std::future_status::ready)
-			throw RpcError("timeout", fmt::format("'{}' did not run on the main thread within {} ms", method,
-				entry.opts.timeout.count()));
-		outcome = future.get();
-	}
+	if (entry.opts.mainThread) return runOnMainThread(entry.fn, params, entry.opts.timeout);
+	auto outcome = runGuarded(entry, params);
+	if (outcome.error) throw *outcome.error;
+	return std::move(outcome.value);
+}
+
+matjson::Value runOnMainThread(CommandFn fn, matjson::Value const& params, std::chrono::milliseconds timeout) {
+	Entry entry{std::move(fn), CommandOptions{}};
+	auto promise = std::make_shared<std::promise<Outcome>>();
+	auto future = promise->get_future();
+	// The lambda owns copies, so work that finishes after we gave up waiting is harmless.
+	queueInMainThread([promise, entry, params]() mutable { promise->set_value(runGuarded(entry, params)); });
+	if (future.wait_for(timeout) != std::future_status::ready)
+		throw RpcError("timeout", fmt::format("the main thread did not respond within {} ms", timeout.count()));
+	auto outcome = future.get();
 	if (outcome.error) throw *outcome.error;
 	return std::move(outcome.value);
 }

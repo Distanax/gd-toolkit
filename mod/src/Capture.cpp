@@ -5,6 +5,7 @@
 
 #include <Geode/utils/file.hpp>
 
+#include "Level.hpp"
 #include "Rpc.hpp"
 
 using namespace geode::prelude;
@@ -64,7 +65,8 @@ Camera getCamera(LevelEditorLayer* lel) {
 	auto win = CCDirector::sharedDirector()->getWinSize();
 	float zoom = layer->getScale();
 	auto pos = layer->getPosition();
-	return {(win.width / 2 - pos.x) / zoom, (win.height / 2 - pos.y) / zoom, zoom};
+	// View centre in node space, reported in level-string space.
+	return {(win.width / 2 - pos.x) / zoom, (win.height / 2 - pos.y) / zoom - LEVEL_Y_OFFSET, zoom};
 }
 
 void setCamera(LevelEditorLayer* lel, Camera const& cam) {
@@ -73,7 +75,7 @@ void setCamera(LevelEditorLayer* lel, Camera const& cam) {
 	else layer->setScale(cam.zoom);
 	float zoom = layer->getScale();  // the editor clamps zoom to its own range
 	auto win = CCDirector::sharedDirector()->getWinSize();
-	layer->setPosition({win.width / 2 - cam.x * zoom, win.height / 2 - cam.y * zoom});
+	layer->setPosition({win.width / 2 - cam.x * zoom, win.height / 2 - (cam.y + LEVEL_Y_OFFSET) * zoom});
 }
 
 }  // namespace bridge

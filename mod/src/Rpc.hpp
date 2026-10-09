@@ -33,6 +33,11 @@ void registerCommand(std::string name, CommandFn fn, CommandOptions opts = {});
 // Runs a command by name: on the main thread if required, waiting up to its timeout. Throws RpcError.
 matjson::Value dispatch(std::string const& method, matjson::Value const& params);
 
+// For off-thread commands that need several main-thread steps with real frames in between (e.g. move the
+// camera, let GD redraw, then capture): runs fn on the main thread and waits for it. Throws RpcError.
+matjson::Value runOnMainThread(CommandFn fn, matjson::Value const& params,
+	std::chrono::milliseconds timeout = std::chrono::seconds(10));
+
 // Registers commands from a translation unit at static-init time:
 //   BRIDGE_COMMAND(ping) { return matjson::makeObject({{"pong", true}}); }
 #define BRIDGE_COMMAND_IMPL(name, opts)                                                                  \

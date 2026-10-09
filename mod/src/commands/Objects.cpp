@@ -129,7 +129,7 @@ struct Selector {
 			auto g = groupsOf(obj);
 			if (std::none_of(g.begin(), g.end(), [&](int id) { return groups.contains(id); })) return false;
 		}
-		if (region && !region->containsPoint(obj->getPosition())) return false;
+		if (region && !region->containsPoint(toLevel(obj->getPosition()))) return false;
 		return true;
 	}
 };
@@ -156,7 +156,7 @@ Selector parseSelector(matjson::Value const& params, bool forWrite) {
 }
 
 matjson::Value describe(GameObject* obj, LevelEditorLayer* lel, bool withString) {
-	auto pos = obj->getPosition();
+	auto pos = toLevel(obj->getPosition());
 	matjson::Value groups = matjson::Value::array();
 	for (int g : groupsOf(obj)) groups.push(g);
 	auto o = matjson::makeObject({
@@ -271,7 +271,8 @@ BRIDGE_COMMAND(modify_objects) {
 	for (auto obj : targets) {
 		auto props = parseObject(std::string(obj->getSaveString(lel)));
 		if (move) {
-			auto pos = obj->getPosition();
+			// Level-string coordinates (not the node position, which sits LEVEL_Y_OFFSET higher).
+			auto pos = toLevel(obj->getPosition());
 			setProp(props, "2", fmt::format("{}", pos.x + dx));
 			setProp(props, "3", fmt::format("{}", pos.y + dy));
 		}
