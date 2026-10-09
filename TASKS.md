@@ -40,12 +40,12 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 25. MCP tools: `get_level_string`, `set_level_string` (+ tests on mock)
 
 ## M5 — Objects
-- [ ] 26. Shared object model: dict of GD keys <-> object; reuse toolkit/gdlib key names in the server
-- [ ] 27. Mod: `add_objects` (batch, from object-string fragments)
-- [ ] 28. Mod: object selectors (by uid, object id, group, region) shared by remove/modify/list
-- [ ] 29. Mod: `remove_objects`
-- [ ] 30. Mod: `modify_objects` (position, rotation, scale, groups, colour, raw keys)
-- [ ] 31. Mod: `list_objects` (filters, paging) and `get_triggers(type)`
+- [x] 26. Shared object model: dict of GD keys <-> object; reuse toolkit/gdlib key names in the server
+- [x] 27. Mod: `add_objects` (batch, from object-string fragments)
+- [x] 28. Mod: object selectors (by uid, object id, group, region) shared by remove/modify/list
+- [x] 29. Mod: `remove_objects`
+- [x] 30. Mod: `modify_objects` (position, rotation, scale, groups, colour, raw keys)
+- [x] 31. Mod: `list_objects` (filters, paging) and `get_triggers(type)`
 - [ ] 32. MCP tools for M5 with friendly arguments (names like "spike", "move_trigger") + tests
 
 ## M6 — Camera + screenshots

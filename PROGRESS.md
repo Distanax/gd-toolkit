@@ -70,9 +70,15 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 21 done: get_level_string -> {name, object_count, level_string} (raw). Committed with 24.
 - 2026-10-09: Task 24 done: set_level_string(level_string, confirm_name?): editor + not playtesting + writable, backup, compressString into m_level->m_levelString, replaceScene(LevelEditorLayer::scene(level,false)). Returns {name, backup, reloaded}.
 - 2026-10-09: Task 25 done: MCP tools get_level_string / set_level_string (+ mock level model mirroring the mod: CLAUDE-prefix guard, backups, not_in_editor, busy). Same commit also adds the MCP side of task 32: objects.py (names -> IDs, friendly props -> GD keys, gdlib-compatible number formatting, selectors) and tools add/remove/modify/list_objects + get_triggers; 21 tests pass locally.
+- 2026-10-09: Task 26 done: (commands/Objects.cpp, one commit for 26-31)
+- 2026-10-09: Task 27 done: (commands/Objects.cpp, one commit for 26-31)
+- 2026-10-09: Task 28 done: (commands/Objects.cpp, one commit for 26-31)
+- 2026-10-09: Task 29 done: (commands/Objects.cpp, one commit for 26-31)
+- 2026-10-09: Task 30 done: (commands/Objects.cpp, one commit for 26-31)
+- 2026-10-09: Task 31 done: commands/Objects.cpp (tasks 26-31 in one file/commit): objects travel as GD object strings (same format as level strings and toolkit/gdlib.py; parse/join helpers). add_objects = createObjectsFromString(noUndo=false) -> uids. Selector {uids, ids, groups, region, triggers, all} ANDed, empty refused for writes. remove_objects = removeObject(obj, false). modify_objects = edit keys on getSaveString + optional move, then remove + re-create (works for every property incl. trigger settings; uids change). list_objects (paged, max 5000, optional object strings), get_triggers(id). Every write: editor + not playtesting + CLAUDE guard + backup.
 
 ## Next
-- Wait for mod CI on 25c85be; then tasks 26-31 (mod objects, drafted in commands/Objects.cpp).
+- Wait for CI; then task 32 (MCP side already pushed) and M6 camera/screenshot (drafted: Capture.*, commands/View.cpp).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
