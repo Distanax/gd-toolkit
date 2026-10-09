@@ -31,7 +31,7 @@ Notes go to `mastery/notes/<guide>.md` (one file per guide, cited). Lessons go t
 ## M3 — Intermediate gameplay notes (priority 3)
 - [x] 17. [offline] notes: mechanics-1-intro, mechanics-2-gameplay-loops
 - [x] 18. [offline] notes: mechanics-3-feedback, mechanics-4-decision-making, mechanics-5-limitations-strategy
-- [ ] 19. [offline] notes: pacing-1-basics, pacing-2-progression
+- [x] 19. [offline] notes: pacing-1-basics, pacing-2-progression
 - [ ] 20. [offline] notes: pacing-3-fairness
 - [ ] 21. [offline] notes: pacing-4-note-representation, pacing-5-intensity
 
