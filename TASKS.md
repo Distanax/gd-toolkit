@@ -62,9 +62,9 @@ Mission and acceptance criteria: PROGRESS.md.
 
 ## M8 — Level management + music
 - [x] 41. Research: saving from the editor, LocalLevelManager, creating/opening levels by name in 2.2081
-- [ ] 42. Mod: `save_level`
-- [ ] 43. Mod: `create_level(name, song_id)` (forces "CLAUDE " prefix) and `open_level(name)`
-- [ ] 44. Mod: `get_music` (song ID, offset, guidelines/BPM if set)
+- [x] 42. Mod: `save_level`
+- [x] 43. Mod: `create_level(name, song_id)` (forces "CLAUDE " prefix) and `open_level(name)`
+- [x] 44. Mod: `get_music` (song ID, offset, guidelines/BPM if set)
 - [ ] 45. MCP tools for M8
 
 ## M9 — Undo/redo + backups
