@@ -52,9 +52,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 19 done: notes/pacing-1-basics.md (komatic5, azgamez, creeperiv): flow conditions (clear goals, rapid feedback, adequate challenge), micro flow. notes/pacing-2-progression.md (komatic5, Half-Cooked Ramen): macro flow, chart difficulty+intensity per section, skill ordering, typical whole-level shape, match the song. Mapped to plan-vs-measured section charts and delayed-death checks.
 - 2026-10-09: Task 20 done: notes/pacing-3-fairness.md (TDP9, NotAModerator): fairness = can teach its rules; coyote-time platform margins, lenient orb/portal hitboxes, No Touch + inner hazard hitboxes, predictability, helping, mechanic easing, micro-pacing leniency, avoid hand-holding (SLAM). No numeric thresholds in the guide (ours from sim/corpus). Fairness linter rule table; CHECKLIST clarity/fairness rows cited.
 - 2026-10-09: Task 21 done: notes/pacing-4-note-representation.md (illusion2, sparktwee): movement size = note strength, holds add emphasis, sound division, direction, repetition/breaking it, form, beat strength 4/4 "1 3 2 4" (3/4 "1 3 2"), syncopation consistency, gamemode changes on strong beats (speed changes NOT stated: kept as our working extension). notes/pacing-5-intensity.md (TDP9): intensity is felt; levers; breaks between intense parts. CHECKLIST sync rows now cited. **M3 complete.**
+- 2026-10-09: Task 22 done: notes how-to-decorate (komatic5 et al.: deco elements, styles, editor layers/Z layers B5-B3 bg / B2-T1 blocks, Z order gaps 3-5, reserved channels 1/2/3, trigger organization, shapes+colours before details), creating-details (komatic5, sparktwee: purpose-first, less is more, 80/20 focal points, functional/narrative/aesthetic — LDM hides aesthetic only), using-deco-objects (komatic5: shape first, custom shapes, blending vs opacity, foggy-blend rule). Mapped to deco library constants and deco checker rules.
 
 ## Next
-- Task 22: deco notes how-to-decorate, creating-details, using-deco-objects.
+- Task 23: notes making-blocks + making-backgrounds.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's

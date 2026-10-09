@@ -36,7 +36,7 @@ Notes go to `mastery/notes/<guide>.md` (one file per guide, cited). Lessons go t
 - [x] 21. [offline] notes: pacing-4-note-representation, pacing-5-intensity
 
 ## M4 — Basic deco notes (priority 4)
-- [ ] 22. [offline] notes: how-to-decorate, creating-details, using-deco-objects
+- [x] 22. [offline] notes: how-to-decorate, creating-details, using-deco-objects
 - [ ] 23. [offline] notes: making-blocks, making-backgrounds
 - [ ] 24. [offline] notes: making-air-deco, making-animations, making-effects
 - [ ] 25. [offline] notes: using-shaders, parallax
