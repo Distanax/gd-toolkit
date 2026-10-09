@@ -16,7 +16,7 @@ Notes go to `mastery/notes/<guide>.md` (one file per guide, cited). Lessons go t
 - [x] 5. [offline] notes/planning-a-level.md
 - [x] 6. [offline] notes/making-a-draft.md
 - [x] 7. [offline] notes/playtesting.md
-- [ ] 8. [offline] notes/asking-for-feedback.md
+- [x] 8. [offline] notes/asking-for-feedback.md
 - [ ] 9. [offline] notes/the-rating-system.md
 - [ ] 10. [offline] mastery/CHECKLIST.md v0: self-review categories (gameplay, sync, consistency, fairness, pacing, deco, effects, performance, LDM, presentation), each criterion cited, with the evidence that proves it
 

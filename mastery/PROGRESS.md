@@ -38,9 +38,10 @@ Featured/Epic 2.2 levels, using gd-bridge in the real editor; capstone = finish 
 - 2026-10-09: Task 5 done: notes/planning-a-level.md (komatic5): main/secondary ideas, plan fields, reserved resources, scope triangle, MoSCoW, detours; mapped to PLAN.md (task 115) and resource constants in the trigger/deco libraries.
 - 2026-10-09: Task 6 done: notes/making-a-draft.md (komatic5, sparktwee): MVP draft, placeholders, execution test, Occam, scientific method for unknown tasks, failing well; mapped to layout-before-deco ordering and drill logs.
 - 2026-10-09: Task 7 done: notes/playtesting.md (TDP9, sparktwee): five elements (enjoyability, reliability, playability, balancing, presentation), solo limits + mirror portal, order of familiarity, creators then players; mapped each element to the evidence we can produce (only Distanax judges enjoyability).
+- 2026-10-09: Task 8 done: notes/asking-for-feedback.md (komatic5): be specific, describe intent/inspiration/stage, polite receiving, list -> evaluate -> revise -> re-ask; mapped to PLAYTEST.md request format and the decision table for received feedback.
 
 ## Next
-- Task 8: notes/asking-for-feedback.md.
+- Task 9: notes/the-rating-system.md.
 
 ## Decisions
 - **Corpus through the game, not scraping:** new bridge commands search/download rated levels via GD's
