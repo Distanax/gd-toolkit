@@ -67,4 +67,7 @@ Useful extra: `py tests\e2e_bridge.py --mock` runs the same script against a fak
 all — if that fails too, the problem is the Python side, not the mod.
 
 ## Results
-_(none yet)_
+- 2026-10-09, run by Claude on Distanax's PC at his request: mod v0.2.0 installed via section 1, loads
+  (`GD Bridge v0.2.0 listening on 127.0.0.1:47821`, /health ok, status reports Geode v5.10.1 / GD 2.2081).
+  First e2e run 12/13 (object y reported 90 too high; region screenshot captured a half-redrawn view);
+  both fixed in 163a3cb; second run **13/13 ALL PASSED**, screenshot and frames checked by eye.

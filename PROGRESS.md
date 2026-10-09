@@ -104,15 +104,21 @@ up the level string first; never upload levels online.
   id trig_01A42oiYtc4k2m5ooq4FRL1R (https://claude.ai/code/routines/trig_01A42oiYtc4k2m5ooq4FRL1R),
   cron `31 */3 * * *` UTC, Sonnet 5.5, Default environment. Delete it in task 53 (claude.ai/code/routines;
   the API can't delete routines).
+- 2026-10-09: **Live verification (tasks 8, 51), run by Claude at Distanax's request.** Installed the
+  release into `<GD>\geode\mods`, installed the server with the README command, launched GD via
+  `steam://rungameid/322170`. Mod loads (Geode log + /health + status). e2e run 1: 12/13 — object y
+  came back 90 too high (GD node y = level-string y + 90), and the region screenshot showed a
+  half-redrawn view (captured in the same frame as the camera move). Fixed in 163a3cb: level-string
+  coordinates everywhere (toLevel/toNode, LEVEL_Y_OFFSET 90 in Level.hpp; modify move no longer writes
+  node y), screenshot aims -> waits 150 ms off-thread -> captures (runOnMainThread helper). GD restarted
+  (CLAUDE test saved first, graceful close) with the new build: e2e run 2 **13/13**, screenshot and
+  frames verified visually. **Acceptance 2 and 4 met.** Version 1.0.0, tag v1.0.0.
 
 ## Next
-**Every task Claude can do alone is done. Remaining work is blocked on Distanax:**
-- Task 8: install the mod and confirm it loads (TESTING.md section 1). Acceptance 2.
-- Task 51: run `py tests\e2e_bridge.py` and report (TESTING.md section 2). Acceptance 4.
-- Task 53 (tag v1.0.0, delete the routine) after 8 and 51 are confirmed.
-When Distanax reports results: fix whatever the live run exposes (expect a few in-game issues; nothing
-has run inside GD yet), push, ask for a re-run, then do task 53.
-Acceptance status: 1 met, 2 pending Distanax, 3 met, 4 script done + pending Distanax's run, 5 met.
+**All five acceptance criteria are met.** Only task 53's last step remains: Distanax deletes the
+"gd-bridge continue" routine at https://claude.ai/code/routines (the API can't delete routines).
+Future work, not part of this mission: live-test the tools the e2e doesn't cover (undo/redo,
+restore_backup, modify_objects, playtest from_x, get_music); friendly names for more trigger types.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).

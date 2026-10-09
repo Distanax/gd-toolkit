@@ -14,7 +14,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 5. GitHub Actions: build Win64 .geode on every push to main (build-geode-mod, sdk v5.10.1); get it green
 - [x] 6. CI: publish the .geode as a release asset (rolling `latest` release on main, versioned on `v*` tags)
 - [x] 7. TESTING.md: 5-minute install guide (download .geode, drop in mods folder, check log)
-- [ ] 8. [blocked: Distanax] (TESTING.md section 1) Confirm the mod loads in GD (acceptance 2)
+- [x] 8. (TESTING.md section 1) Confirm the mod loads in GD (acceptance 2)
 
 ## M2 — Mod transport
 - [x] 9. Research: Geode v5 threading (`queueInMainThread`), matjson API, save-dir path, logging; notes in PROGRESS.md
@@ -75,6 +75,6 @@ Mission and acceptance criteria: PROGRESS.md.
 ## M10 — End-to-end + docs
 - [x] 49. tests/e2e_bridge.py: create "CLAUDE test", add blocks/spikes/orb/move trigger, read back, screenshot, playtest 3 s with frames, save (acceptance 4)
 - [x] 50. TESTING.md: how to run the e2e test and what to report
-- [ ] 51. [blocked: Distanax] (TESTING.md section 2) Run the e2e test and report
+- [x] 51. (TESTING.md section 2) Run the e2e test and report
 - [x] 52. CLAUDE.md: every tool with examples + known limits (acceptance 5)
-- [ ] 53. Tag v1.0.0 release; delete the "gd-bridge continue" routine once acceptance 2 and 4 are confirmed
+- [ ] 53. [blocked: Distanax — delete the routine] Tag v1.0.0 release; delete the "gd-bridge continue" routine once acceptance 2 and 4 are confirmed

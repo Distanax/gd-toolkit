@@ -23,6 +23,8 @@ editor (refused, so unsaved work is never discarded); nothing is ever uploaded o
 refused during a playtest (`busy`). Errors come back as `[code] message` (codes in PROTOCOL.md).
 
 Coordinates are GD units: 30 = 1 block, object centre, ground row y = 15 (same as `toolkit/gdlib.py`).
+Every tool speaks **level-string coordinates**. (Internally GD places objects 90 units higher — string
+y 15 is node y 105 — and the mod converts both ways; measured live 2026-10-09.)
 
 | Tool | What it does | Example arguments |
 |---|---|---|
@@ -64,9 +66,10 @@ from a gdlib build) -> `screenshot` to check the layout -> `playtest start` + `c
 `playtest stop` to watch it -> `save_level`. Distanax still does the real playtest.
 
 **Known limits (2026-10-09):**
-- **Not yet verified in-game.** Everything builds in CI and passes against the mock bridge
-  (35 tests + `tests/e2e_bridge.py --mock`); the real run is TESTING.md section 2 (tasks 8, 51).
-  Treat the first live session as a test of the tools themselves.
+- **Verified in-game 2026-10-09** (Geode v5.10.1, GD 2.2081): `tests/e2e_bridge.py` passes 13/13 live
+  (create/open, add, read back, triggers, region screenshot, playtest + frames, save). Tools it does
+  not exercise (undo/redo, restore_backup, modify_objects, playtest from_x, get_music) are mock-tested
+  only so far.
 - Windows only (the mod uses Winsock; CI builds Win64 only).
 - `set_level_string` and `restore_backup` reload the editor: GD's undo history is lost (backups cover it).
 - `modify_objects` re-creates objects, so uids change and GD's undo sees a remove + add.
@@ -121,8 +124,8 @@ from a gdlib build) -> `screenshot` to check the layout -> `playtest start` + `c
   between the two. Confirm which is wanted before building on Section 1.
 
 ## Roadmap
-1. Custom **Geode bridge mod** for live editor control — built as gd-bridge (see above); CI builds it,
-   so no local C++ toolchain is needed. Waiting on Distanax's in-game confirmation.
+1. Custom **Geode bridge mod** for live editor control — DONE: gd-bridge v1.0.0 (see above), verified
+   in-game 2026-10-09. CI builds it, so no local C++ toolchain is needed.
 2. **Blender -> GD 3D converter** for EVOLUTION-style effects (reference level 150086482, copyable).
 3. **Playtest recordings** (Win+Alt+R) dropped into `gd_levels` for frame analysis.
 
