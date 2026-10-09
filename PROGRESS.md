@@ -28,8 +28,14 @@ up the level string first; never upload levels online.
 ## Status
 - 2026-10-08: Mission started. TASKS.md written (53 tasks, M0-M10).
 
+- 2026-10-08: Task 2 blocked: routine creation returned `github_token_missing` (GitHub not connected
+  to claude.ai). Steps in TESTING.md section 0. Prepared config: name "gd-bridge continue", cron
+  `0 */3 * * *` (UTC), model claude-sonnet-5-5, environment Default (env_016RcFPPpmcyg8QVpaAzEvtc),
+  repo Distanax/gd-toolkit, tools Bash/Read/Write/Edit/Glob/Grep/WebFetch/WebSearch, prompt = the
+  mission's continue prompt plus a note that cloud runs have no PC access and must verify CI via the API.
+
 ## Next
-- Task 2: create the "gd-bridge continue" routine.
+- Task 3: research the Geode v5 mod layout.
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).
