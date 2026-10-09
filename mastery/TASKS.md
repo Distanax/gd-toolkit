@@ -9,7 +9,7 @@ Notes go to `mastery/notes/<guide>.md` (one file per guide, cited). Lessons go t
 ## M0 — Setup
 - [x] 1. [offline] mastery/ scaffolding (TASKS, PROGRESS, PLAYTEST, LESSONS, notes/, corpus/), resume protocol, CLAUDE.md pointer
 - [x] 2. [offline] Create the "gd-mastery continue" routine (every 3 h), record its id
-- [ ] 3. [offline] mastery/SOURCES.md: every guide URL from the GDCS index with status, RobTop docs, gddocs, gdp, OpenGD, SPWN
+- [x] 3. [offline] mastery/SOURCES.md: every guide URL from the GDCS index with status, RobTop docs, gddocs, gdp, OpenGD, SPWN
 
 ## M1 — Ground truth + main skills (priority 1)
 - [ ] 4. [offline] notes/robtop-rating.md — GDRating.pdf + FAQ: what is stated, what is NOT (no tier criteria)
