@@ -1,7 +1,15 @@
-// winsock2 must come before any Geode header: Geode includes <Windows.h> without
-// WIN32_LEAN_AND_MEAN, which would otherwise pull in the conflicting legacy winsock.h.
-#include <winsock2.h>
-#include <ws2tcpip.h>
+// Geode's precompiled header has already included <Windows.h> (without WIN32_LEAN_AND_MEAN), which
+// pulls in the legacy <winsock.h>; including <winsock2.h> after it redefines sockaddr and fails.
+// winsock.h has everything this file needs except two constants, defined below. ws2_32 is linked by
+// Geode's CMake for every mod.
+#include <Geode/Geode.hpp>
+#include <winsock.h>
+#ifndef SO_EXCLUSIVEADDRUSE
+#define SO_EXCLUSIVEADDRUSE ((int)(~SO_REUSEADDR))
+#endif
+#ifndef SD_SEND
+#define SD_SEND 0x01
+#endif
 
 #include "HttpServer.hpp"
 
@@ -10,7 +18,7 @@
 #include <optional>
 #include <string_view>
 
-#include <Geode/loader/Log.hpp>
+
 
 using namespace geode;
 
