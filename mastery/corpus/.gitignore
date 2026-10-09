@@ -1,0 +1,5 @@
+# Downloaded levels and level strings stay local (corpus/POLICY.md)
+levels/
+*.gmd
+*.txt
+!README.md
