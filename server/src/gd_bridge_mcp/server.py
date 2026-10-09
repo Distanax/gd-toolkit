@@ -8,6 +8,7 @@ from mcp.server.mcpserver.exceptions import ToolError
 
 from . import __version__
 from .client import BridgeClient, BridgeError
+from .images import load_png
 from .objects import encode, encode_select, encode_set, object_id
 
 INSTRUCTIONS = """\
@@ -107,6 +108,32 @@ def build_server(client: BridgeClient | None = None) -> MCPServer:
         by trigger name ("move", "color", "spawn", ...) or object ID (901)."""
         tid = friendly(lambda: object_id(type)) if type is not None else None
         return call("get_triggers", id=tid)
+
+    # ---- camera + screenshots ---------------------------------------------------------------
+    @mcp.tool()
+    def move_camera(x: float | None = None, y: float | None = None, zoom: float | None = None) -> dict[str, Any]:
+        """Point the editor camera: x/y = GD units at the centre of the view, zoom = editor zoom (1 is
+        default; the editor clamps it). Omitted values stay as they are. Returns the resulting camera.
+        Call with no arguments to just read the camera."""
+        if x is None and y is None and zoom is None:
+            return call("get_camera")
+        return call("move_camera", x=x, y=y, zoom=zoom)
+
+    # structured_output=False: the result is content blocks (image + JSON text), not a JSON value.
+    @mcp.tool(structured_output=False)
+    def screenshot(x: float | None = None, y: float | None = None, zoom: float | None = None,
+                   region: dict[str, float] | None = None, hide_ui: bool = True,
+                   restore_camera: bool = True, max_width: int = 1280) -> list[Any]:
+        """Screenshot of the game window as a PNG image. In the editor you can aim it first: x/y/zoom
+        (camera centre in GD units) or region {"x1","y1","x2","y2"} to fit an area; the camera goes back
+        afterwards unless restore_camera=false. hide_ui hides the editor toolbars for the shot. Images
+        wider than max_width are downscaled. Also works outside the editor (captures what's on screen)."""
+        shot = call("screenshot", x=x, y=y, zoom=zoom, region=region, hide_ui=hide_ui,
+                    restore_camera=restore_camera)
+        img, w, h = load_png(shot["path"], max_width)
+        return [img, {"path": shot["path"], "width": w, "height": h,
+                      "captured_width": shot["width"], "captured_height": shot["height"],
+                      "camera": shot.get("camera")}]
 
     mcp.bridge = bridge  # type: ignore[attr-defined]  (handy in tests)
     return mcp

@@ -58,7 +58,12 @@ class MockBridge:
             "modify_objects": self._modify_objects,
             "list_objects": self._list_objects,
             "get_triggers": self._get_triggers,
+            "get_camera": lambda p: dict(self.camera),
+            "move_camera": self._move_camera,
+            "screenshot": self._screenshot,
         }
+        self.camera = {"x": 285.0, "y": 160.0, "zoom": 1.0}
+        self.capture_size = (1920, 1080)
         self._server: ThreadingHTTPServer | None = None
 
     # -- level model (mirrors mod/src/Level.cpp + commands/*.cpp) -----------------
@@ -190,6 +195,35 @@ class MockBridge:
                if int(o["props"]["1"]) in TRIGGER_IDS.values()
                and (p.get("id") is None or int(o["props"]["1"]) == int(p["id"]))]
         return {"count": len(out), "triggers": out}
+
+    def _move_camera(self, p: dict[str, Any]) -> dict[str, Any]:
+        self._require_editor()
+        for k in ("x", "y", "zoom"):
+            if p.get(k) is not None:
+                self.camera[k] = float(p[k])
+        return dict(self.camera)
+
+    def capture(self, name: str) -> str:
+        from .images import tiny_png
+        path = self.directory / "captures" / f"{name}.png"
+        path.parent.mkdir(exist_ok=True)
+        path.write_bytes(tiny_png(*self.capture_size))
+        return str(path)
+
+    def _screenshot(self, p: dict[str, Any]) -> dict[str, Any]:
+        cam = dict(self.camera)
+        if self.state["scene"] == "LevelEditorLayer":
+            r = p.get("region")
+            if r:
+                cam = {"x": (r["x1"] + r["x2"]) / 2, "y": (r["y1"] + r["y2"]) / 2, "zoom": 0.5}
+            for k in ("x", "y", "zoom"):
+                if p.get(k) is not None:
+                    cam[k] = float(p[k])
+            if not p.get("restore_camera", True):
+                self.camera = dict(cam)
+        path = self.capture(f"shot_{len(self.calls)}")
+        w, h = self.capture_size
+        return {"path": path, "width": w, "height": h, "camera": cam}
 
     # -- default commands --------------------------------------------------------
     def _status(self, p: dict[str, Any]) -> dict[str, Any]:

@@ -80,9 +80,10 @@ up the level string first; never upload levels online.
 - 2026-10-09: Task 33 done: Camera = GJBaseGameLayer::m_objectLayer (scale = zoom, position = pan): centre (x,y) at zoom z <=> position = winSize/2 - (x,y)*z; zoom via EditorUI::updateZoom (keeps UI in sync, clamps). Capture = CCRenderTexture::create(winSize points; allocates points*content scale = full-res pixels), begin, runningScene->visit(), end, newCCImage(true), saveToFile(path, false).
 - 2026-10-09: Task 34 done: get_camera / move_camera(x?, y?, zoom?) in commands/View.cpp (Capture.cpp getCamera/setCamera). Committed with 35.
 - 2026-10-09: Task 35 done: screenshot(x?, y?, zoom? | region?, hide_ui=true, restore_camera=true): aims the editor camera (not during playtest), hides EditorUI for the shot, captures to <save dir>/captures/shot_<UTC>_<n>.png, restores camera; works outside the editor as a plain screen capture. Returns {path, width, height, camera}.
+- 2026-10-09: Task 36 done: MCP move_camera (no args = read) and screenshot -> [ImageContent PNG, JSON metadata] (tool registered with structured_output=False: an Image cannot be structured output). Reads the PNG the mod wrote (same machine), downscales to max_width (default 1280) with Pillow (new dependency). Mock writes real PNGs; 25 tests pass.
 
 ## Next
-- Task 36 (MCP side, same push).
+- Wait for CI (mod M6 + Python); then M7 playtest + frames (research done, see 37 notes next).
 
 ## Environment facts (verified 2026-10-08)
 - Distanax: Steam GD on Windows, Geode **v5.10.1** (released 2026-08-29).

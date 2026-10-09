@@ -52,7 +52,7 @@ Mission and acceptance criteria: PROGRESS.md.
 - [x] 33. Research: editor camera (EditorUI / m_objectLayer position + scale), CCRenderTexture -> PNG in v5
 - [x] 34. Mod: `move_camera(x, y, zoom)` and `get_camera`
 - [x] 35. Mod: `screenshot` (current view or region; hide editor UI optionally) -> PNG file + base64
-- [ ] 36. MCP tools `move_camera`, `screenshot` (returns an MCP image)
+- [x] 36. MCP tools `move_camera`, `screenshot` (returns an MCP image)
 
 ## M7 — Playtest + frame capture
 - [ ] 37. Research: editor playtest API (onPlaytest/onStopPlaytest, start from x / start pos)
