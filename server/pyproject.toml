@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gd-bridge-mcp"
-version = "1.0.2"
+version = "1.1.0"
 description = "MCP server that drives the Geometry Dash editor through the GD Bridge Geode mod"
 readme = "README.md"
 requires-python = ">=3.10"

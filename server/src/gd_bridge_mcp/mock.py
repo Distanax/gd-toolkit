@@ -73,6 +73,10 @@ class MockBridge:
             "redo": self._redo,
             "list_backups": self._list_backups,
             "restore_backup": self._restore_backup,
+            "autoplay": lambda p: {"armed": True, "events": len(p.get("inputs", []))},
+            "autoplay_status": lambda p: {"armed": True, "active": True, "events": 0, "next_event": 0,
+                                          "deaths": [], "max_x": 0.0, "trace_points": 0},
+            "autoplay_clear": lambda p: {"cleared": True},
         }
         self.saved_levels: dict[str, str] = {}  # name -> saved level string (the "local levels")
         self.undo_stack: list[str] = []

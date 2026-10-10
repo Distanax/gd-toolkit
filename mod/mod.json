@@ -5,7 +5,7 @@
 	},
 	"id": "distanax.gd-bridge",
 	"name": "GD Bridge",
-	"version": "v1.0.2",
+	"version": "v1.1.0",
 	"developer": "Distanax",
 	"description": "Local-only bridge that lets an MCP server control the level editor.",
 	"links": {

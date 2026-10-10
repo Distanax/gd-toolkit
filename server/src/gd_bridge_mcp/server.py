@@ -229,6 +229,21 @@ def build_server(client: BridgeClient | None = None) -> MCPServer:
         same way."""
         return call("restore_backup", file=file, level=level, confirm_name=confirm_name)
 
+    # ---- autoplay (scripted inputs during a playtest) ---------------------------------------
+    @mcp.tool()
+    def autoplay(inputs: list[list[Any]], stop_on_death: bool = True, trace_every: int = 0) -> dict[str, Any]:
+        """Arm a scripted input run for the next editor playtest: inputs = [[x, press], ...] where x is a
+        level-string x and press is true (press/hold) or false (release). Inputs fire on the physics step
+        the player reaches x. Then call playtest(action="start") and later autoplay_status. Proves a planned
+        input sequence clears the level in the real engine; it does not prove fairness or fun."""
+        return call("autoplay", inputs=inputs, stop_on_death=stop_on_death, trace_every=trace_every)
+
+    @mcp.tool()
+    def autoplay_status(trace: bool = False) -> dict[str, Any]:
+        """Result of the armed autoplay run: deaths [{x, y}], max_x reached, events fired; trace=true adds
+        [x, y, vy, mode, upside_down, on_ground] samples (if trace_every was set)."""
+        return call("autoplay_status", trace=trace)
+
     mcp.bridge = bridge  # type: ignore[attr-defined]  (handy in tests)
     return mcp
 
