@@ -245,6 +245,29 @@ def _cube_hops(w: World, s: Section, tl: Timeline, jumps) -> None:
         platform(w, stand_from, tl.xb(s.b1) + 30, surf)
 
 
+class _RealPath:
+    """Real-engine trace from verify.py (out/thermal_lock_real.json), used to build flying tunnels around
+    the path GD actually produces for our inputs. Only used if its input script matches this build."""
+
+    def __init__(self):
+        self.trace = None
+        path = ROOT / "out" / "thermal_lock_real.json"
+        if path.exists() and "--sim-only" not in sys.argv:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            self.trace = data.get("trace")
+            self.inputs_hash = data.get("inputs_hash")
+
+    def rows(self, x0: float, x1: float):
+        if not self.trace or getattr(self, "inputs_hash", None) != CURRENT_INPUTS_HASH[0]:
+            return None
+        rows = [(r[0], r[1], r[2], r[3]) for r in self.trace if x0 <= r[0] <= x1]
+        return rows or None
+
+
+REAL_PATH = _RealPath()
+CURRENT_INPUTS_HASH = [None]
+
+
 def gen_tunnel(w: World, s: Section, tl: Timeline, holds, margin: float, thin: bool = True) -> None:
     """Flying modes: script holds/taps, simulate the free path in the corridor, build a tunnel around
     it (walls `margin` units from the path's extent in each 30-unit column)."""
@@ -256,11 +279,15 @@ def gen_tunnel(w: World, s: Section, tl: Timeline, holds, margin: float, thin: b
             w.release(tl.xb(s.b0 + b_off))
         else:
             w.tap(tl.xb(s.b0 + item[1]))
-    # simulate this section alone: player enters at the floor in this mode
-    lvl = gdsim.Level(portals=[(x0, 45.0, s.mode)])
-    start = gdsim.Player(x=x0 - 40, y=GROUND, mode="cube", speed=s.speed)
-    ev = [(x, p) for x, p in w.inputs if x0 - 1 <= x <= x1 + 1]
-    p, rows = gdsim.simulate(lvl, ev, x1, start=start, trace=True)
+    rows = REAL_PATH.rows(x0, x1)
+    if rows is None:
+        # no real-engine trace yet: simulate this section alone (player enters at the floor)
+        lvl = gdsim.Level(portals=[(x0, 45.0, s.mode)])
+        start = gdsim.Player(x=x0 - 40, y=GROUND, mode="cube", speed=s.speed)
+        ev = [(x, p) for x, p in w.inputs if x0 - 1 <= x <= x1 + 1]
+        p, rows = gdsim.simulate(lvl, ev, x1, start=start, trace=True)
+    else:
+        w.notes.append(f"{s.name}: tunnel built around the REAL engine path ({len(rows)} points)")
     half = gdsim.WAVE_HALF if s.mode == "wave" else gdsim.PLAYER_HALF
     ceil = gdsim.CORRIDOR.get(s.mode, 10) * 30
     c = snap(x0 + 90, 30) + 15  # leave the portal entry open
@@ -276,25 +303,58 @@ def gen_tunnel(w: World, s: Section, tl: Timeline, holds, margin: float, thin: b
         c += 30
 
 
+def track(w: World, s: Section, tl: Timeline, target, subdiv: float = 0.5, last_free_beats: float = 4) -> None:
+    """Flying modes: at every `subdiv` beat choose hold/release (ship) or tap/no-tap (UFO) by simulating
+    both options over the interval and keeping the one that ends closest to target(beat). Inputs land on
+    the beat grid; the last `last_free_beats` have no input so the player settles on the floor."""
+    x0, x1 = tl.xb(s.b0), tl.xb(s.b1)
+    lvl = gdsim.Level(portals=[(x0, 45.0, s.mode)])
+    p = gdsim.Player(x=x0 - 40, y=GROUND, mode="cube", speed=s.speed)
+    p, _ = gdsim.simulate(lvl, [], x0 + 2, start=p)
+    held = False
+    b = 0.0
+    span = s.b1 - s.b0 - last_free_beats
+    while b < span:
+        xa, xb_ = tl.xb(s.b0 + b), tl.xb(s.b0 + b + subdiv)
+        goal = target(b + subdiv)
+        best = None
+        for choice in (True, False):
+            q = copy.deepcopy(p)
+            if s.mode == "ufo":
+                ev = [(xa, True), (xa + 6, False)] if choice else []
+            else:
+                ev = [(xa, choice)]
+            q, _ = gdsim.simulate(lvl, ev, xb_, start=q)
+            err = abs(q.y - goal) + (1000 if q.y < 25 or q.y > 275 else 0)
+            if best is None or err < best[0]:
+                best = (err, choice, q)
+        _, choice, p = best
+        if s.mode == "ufo":
+            if choice:
+                w.tap(xa)
+        elif choice != held:
+            (w.press if choice else w.release)(xa)
+            held = choice
+        b += subdiv
+    if held:
+        w.release(tl.xb(s.b0 + span))
+
+
 def gen_ship(w: World, s: Section, tl: Timeline) -> None:
-    # melodic: long smooth holds on half-bars, quick corrections on beats
-    # last bar has no input: the ship settles on the floor before the next portal
-    holds = []
-    for bar in range(0, 28, 4):
-        holds += [("hold", bar + 0.0, bar + 1.5), ("hold", bar + 2.0, bar + 2.6), ("hold", bar + 3.0, bar + 3.5)]
-    gen_tunnel(w, s, tl, holds, margin=50)
+    # melodic: the path breathes with 2-bar phrases (slow swell) plus a smaller per-bar ripple
+    target = lambda b: 140 + 60 * math.sin(2 * math.pi * b / 8) + 22 * math.sin(2 * math.pi * b / 2)
+    track(w, s, tl, target, subdiv=0.5)
+    gen_tunnel(w, s, tl, [], margin=56)
 
 
 def gen_ufo(w: World, s: Section, tl: Timeline) -> None:
-    # build: clicks get denser bar by bar (quarters -> eighths), climbing then dropping on bar ends
-    taps = []
-    for bar in range(0, 32, 4):  # last bar: no clicks, the UFO falls to the floor
-        dens = 1.0 if bar < 12 else 0.5
-        b = bar
-        while b < bar + 3:
-            taps.append(("tap", b))
-            b += dens
-    gen_tunnel(w, s, tl, taps, margin=45)
+    # build: climbs through each 4-bar phrase, faster climbs in later phrases (rising tension)
+    def target(b):
+        ph = (b % 16) / 16
+        top = 170 if b < 16 else 210
+        return 50 + (top - 50) * ph
+    track(w, s, tl, target, subdiv=0.5)
+    gen_tunnel(w, s, tl, [], margin=50)
 
 
 def gen_wave(w: World, s: Section, tl: Timeline) -> None:
@@ -395,7 +455,20 @@ GENERATORS = {"cube": gen_cube, "ship": gen_ship, "ufo": gen_ufo, "wave": gen_wa
 
 
 # ---------------------------------------------------------------- assembly + checks
+def inputs_hash(w: World) -> str:
+    import hashlib
+    return hashlib.sha1(json.dumps([[round(x, 3), p] for x, p in sorted(w.inputs)]).encode()).hexdigest()[:16]
+
+
 def build() -> tuple[World, Timeline]:
+    # pass 1 (sim tunnels) just to learn the input script, then pass 2 can use a matching real trace
+    CURRENT_INPUTS_HASH[0] = None
+    w1, _ = _build_once()
+    CURRENT_INPUTS_HASH[0] = inputs_hash(w1)
+    return _build_once()
+
+
+def _build_once() -> tuple[World, Timeline]:
     tl = Timeline(SECTIONS)
     w = World()
     for i, s in enumerate(SECTIONS):

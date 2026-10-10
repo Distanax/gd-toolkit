@@ -20,6 +20,7 @@ time.sleep(secs)
 res = b.call("autoplay_status", trace=True)
 b.call("playtest", action="stop"); b.call("autoplay_clear")
 real = res["trace"]
+res["inputs_hash"] = B.inputs_hash(w)
 (ROOT / "out" / "thermal_lock_real.json").write_text(json.dumps(res), encoding="utf-8")
 lvl = gdsim.Level(solids=w.solids, hazards=w.hazards, portals=w.portals)
 _, sim = gdsim.simulate(lvl, sorted(w.inputs), x_end, trace=True)
