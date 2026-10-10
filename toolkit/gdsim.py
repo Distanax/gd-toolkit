@@ -33,6 +33,7 @@ CORRIDOR = {"ship": 10, "ufo": 10, "wave": 10, "swing": 10, "ball": 8, "spider":
 PLAYER_HALF = 15.0      # 30x30 main hitbox
 SOLID_HALF = 4.5        # inner hitbox that dies on solids (~9x9, OpenGD)
 WAVE_HALF = 10.0        # wave reaches y 10..290 in a 0..300 corridor (measured)
+SPIDER_HALF = 13.5      # spider rests at y 13.5 / 43.5 / 136.5 next to surfaces (measured)
 SPIKE_HALF = (3.0, 6.0)  # ID 8 hazard box half-sizes (OpenGD), centred
 
 
@@ -75,7 +76,7 @@ class Level:
 
 
 def _half(p: Player) -> float:
-    return WAVE_HALF if p.mode == "wave" else PLAYER_HALF
+    return WAVE_HALF if p.mode == "wave" else (SPIDER_HALF if p.mode == "spider" else PLAYER_HALF)
 
 
 def step(p: Player, lvl: Level, pressed: bool) -> None:
@@ -162,6 +163,9 @@ def _enter_mode(p: Player, mode: str, portal_y: float) -> None:
         p.ceil = None
     if mode in ("ship", "ufo", "swing", "wave"):
         p.vy *= 0.5  # GD halves momentum on entering a flying mode (approximation; verify in lab)
+    # smaller hitboxes settle onto the floor on entry (measured: wave y 10, spider y 13.5)
+    if p.g == 1 and abs(p.y - (p.floor + PLAYER_HALF)) < 1.0:
+        p.y = p.floor + (WAVE_HALF if mode == "wave" else SPIDER_HALF if mode == "spider" else PLAYER_HALF)
 
 
 def _spider_teleport(p: Player, lvl: Level) -> None:
@@ -176,7 +180,7 @@ def _spider_teleport(p: Player, lvl: Level) -> None:
         target = p.ceil if p.g == 1 else p.floor
     if target is None:
         return
-    p.y = target - p.g * PLAYER_HALF
+    p.y = target - p.g * SPIDER_HALF
     p.g = -p.g
     p.vy = 0.0
     p.grounded = True
